@@ -1,0 +1,32 @@
+{
+  "name": "grpc-playground",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --cache .",
+    "test": "mocha test/",
+    "demo": "node ./demo",
+    "test:coverage": "nyc --reporter=lcovonly --reporter=clover --reporter=json --reporter=html --report-dir=coverage mocha test/ && nyc report"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "author": {
+    "name": "Jakub Slechta",
+    "email": "jakub.slechta@emplifi.io"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "mocha": "^10.4.0",
+    "nyc": "^17.0.0",
+    "prettier": "^3.3.2"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.10",
+    "@grpc/proto-loader": "^0.7.13",
+    "lodash": "^4.17.21"
+  }
+}
