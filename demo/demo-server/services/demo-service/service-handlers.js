@@ -1,4 +1,7 @@
+// Business logic - gRPC service implementations
+
 var _ = require('lodash')
+var fs = require('fs')
 
 var COORD_FACTOR = 1e7
 
@@ -7,6 +10,11 @@ var COORD_FACTOR = 1e7
  */
 var feature_list = []
 
+fs.readFile(__dirname + '/../../../demo-shared/services/demo-service/service-db.json', function(err, data) {
+	if (err) throw err
+	feature_list = JSON.parse(data)
+})
+
 /**
  * Get a feature object at the given point, or creates one if it does not exist.
  * @param {point} point The point to check
@@ -14,6 +22,7 @@ var feature_list = []
  *     indicates no feature
  */
 function checkFeature(point) {
+	console.log('Checking feature for point:', point)
 	var feature
 	// Check if there is already a feature object for the given point
 	for (var i = 0; i < feature_list.length; i++) {
@@ -48,6 +57,7 @@ function getFeature(call, callback) {
  *     request property for the request value.
  */
 function listFeatures(call) {
+	console.log('Listing features')
 	var lo = call.request.lo
 	var hi = call.request.hi
 	var left = _.min([lo.longitude, hi.longitude])
@@ -77,6 +87,7 @@ function listFeatures(call) {
  * @return The distance between the points in meters
  */
 function getDistance(start, end) {
+	console.log('Calculating distance between points:', start, end)
 	function toRadians(num) {
 		return num * Math.PI / 180
 	}
@@ -104,6 +115,7 @@ function getDistance(start, end) {
  *     response to
  */
 function recordRoute(call, callback) {
+	console.log('Recording route')
 	var point_count = 0
 	var feature_count = 0
 	var distance = 0
@@ -123,6 +135,7 @@ function recordRoute(call, callback) {
 		previous = point
 	})
 	call.on('end', function() {
+		console.log('Route recording complete')
 		callback(null, {
 			point_count: point_count,
 			feature_count: feature_count,
@@ -151,6 +164,7 @@ function pointKey(point) {
  * @param {Duplex} call The stream for incoming and outgoing messages
  */
 function routeChat(call) {
+	console.log('Routing chat')
 	call.on('data', function(note) {
 		var key = pointKey(note.location)
 		/* For each note sent, respond with all previous notes that correspond to
@@ -166,6 +180,7 @@ function routeChat(call) {
 		route_notes[key].push(JSON.parse(JSON.stringify(note)))
 	})
 	call.on('end', function() {
+		console.log('Chat routing complete')
 		call.end()
 	})
 }

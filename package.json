@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint --cache .",
     "test": "mocha test/",
-    "demo": "node ./demo",
+    "demo-server": "node ./demo/demo-server",
+    "demo-client": "node ./demo/demo-client",
     "test:coverage": "nyc --reporter=lcovonly --reporter=clover --reporter=json --reporter=html --report-dir=coverage mocha test/ && nyc report"
   },
   "engines": {
@@ -27,6 +28,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.10.10",
     "@grpc/proto-loader": "^0.7.13",
+    "async": "^3.2.6",
     "lodash": "^4.17.21"
   }
 }
