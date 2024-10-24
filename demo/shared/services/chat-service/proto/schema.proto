@@ -1,0 +1,19 @@
+syntax="proto3";
+
+service ChatRoom {
+	// BIDIRECTIONAL STREAMING
+	// Accepts a stream of Messages sent while a
+	// while receiving other Messages (e.g. from other users).
+	rpc ConnectChat(stream Message) returns (stream Message) {}
+}
+
+enum MessageType {
+	auth = 0;
+	chat = 1;
+}
+
+message Message {
+	MessageType type = 1;
+	optional string content = 2;
+	optional string userName = 3;
+}

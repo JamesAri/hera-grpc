@@ -10,7 +10,7 @@ var COORD_FACTOR = 1e7
  */
 var feature_list = []
 
-fs.readFile(__dirname + '/../../../demo-shared/services/demo-service/service-db.json', function(err, data) {
+fs.readFile(__dirname + '/../../../shared/services/poi-service/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })

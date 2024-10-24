@@ -4,11 +4,11 @@ var async = require('async')
 var _ = require('lodash')
 
 const { getServiceStubConstructor } = require('../../lib/utils')
-const serviceConfig = require('../demo-shared/services/demo-service/service-config')
+const serviceConfig = require('../shared/services/poi-service/service-config')
 
-const ServiceStub = getServiceStubConstructor(serviceConfig)
+const PoiServiceStub = getServiceStubConstructor(serviceConfig)
 
-const stub = new ServiceStub('localhost:50051', grpc.credentials.createInsecure())
+const poiService = new PoiServiceStub('localhost:50051', grpc.credentials.createInsecure())
 
 const COORD_FACTOR = 1e7
 
@@ -17,7 +17,7 @@ const COORD_FACTOR = 1e7
  */
 var feature_list = []
 
-fs.readFile(__dirname + '/../demo-shared/services/demo-service/service-db.json', function(err, data) {
+fs.readFile(__dirname + '/../shared/services/poi-service/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })
@@ -62,8 +62,8 @@ function runGetFeature(callback) {
 		latitude: 0,
 		longitude: 0,
 	}
-	stub.getFeature(point1, featureCallback)
-	stub.getFeature(point2, featureCallback)
+	poiService.getFeature(point1, featureCallback)
+	poiService.getFeature(point2, featureCallback)
 }
 
 /**
@@ -84,7 +84,7 @@ function runListFeatures(callback) {
 		},
 	}
 	console.log('Looking for features between 40, -75 and 42, -73')
-	var call = stub.listFeatures(rectangle)
+	var call = poiService.listFeatures(rectangle)
 	call.on('data', function (feature) {
 		console.log(
 			'Found feature called "' +
@@ -106,7 +106,7 @@ function runListFeatures(callback) {
  */
 function runRecordRoute(callback) {
 	var num_points = 10
-	var call = stub.recordRoute(function (error, stats) {
+	var call = poiService.recordRoute(function (error, stats) {
 		if (error) {
 			callback(error)
 			return
@@ -154,7 +154,7 @@ function runRecordRoute(callback) {
  * @param {function} callback Called when the demo is complete
  */
 function runRouteChat(callback) {
-	var call = stub.routeChat()
+	var call = poiService.routeChat()
 	call.on('data', function (note) {
 		console.log('Got message "' + note.message + '" at ' + note.location.latitude + ', ' + note.location.longitude)
 	})

@@ -5,8 +5,10 @@
   "scripts": {
     "lint": "eslint --cache .",
     "test": "mocha test/",
-    "demo-server": "node ./demo/demo-server",
-    "demo-client": "node ./demo/demo-client",
+    "poi-server": "node ./demo/servers/poi-server.js",
+    "poi-client": "node ./demo/clients/poi-client.js",
+    "chat-server": "node ./demo/servers/chat-server.js",
+    "chat-client": "node ./demo/clients/chat-client.js",
     "test:coverage": "nyc --reporter=lcovonly --reporter=clover --reporter=json --reporter=html --report-dir=coverage mocha test/ && nyc report"
   },
   "engines": {
