@@ -1,4 +1,4 @@
-// Business logic - gRPC service implementations
+// Business logic - gRPC service implementation
 
 var _ = require('lodash')
 var fs = require('fs')
@@ -10,7 +10,8 @@ var COORD_FACTOR = 1e7
  */
 var feature_list = []
 
-fs.readFile(__dirname + '/../../../shared/services/poi-service/poi-db-mock.json', function(err, data) {
+// Mock db
+fs.readFile(__dirname + '/../shared/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })

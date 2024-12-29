@@ -1,15 +1,13 @@
-// Business logic - gRPC service implementations
+// Business logic - gRPC service implementation
 
-const MESSAGE_TYPES = require('../../../shared/services/chat-service/const/message-types')
+const MESSAGE_TYPES = require('../shared/const/message-types')
 
 const users = []
 
 const getUser = (stream) => users.find(user => user.stream === stream)
 
-const removeUser = (stream) => {
-	const user = getUser(stream)
+const removeUser = (user) => {
 	users.splice(users.indexOf(user), 1)
-	return user
 }
 
 const multicast = (message, fromUser) => {
@@ -63,7 +61,12 @@ function connectChat(stream) {
 	})
 
 	stream.on('end', function () {
-		const user = removeUser(stream)
+		const user = getUser(stream)
+		if (!user) {
+			console.log(`[-] ${stream}`)
+			return
+		}
+		removeUser(user)
 		console.log(`[-] User "${user.name}" disconnected`)
 		broadcast({type: MESSAGE_TYPES.CHAT, content: `${user.name} left the chat`})
 	})

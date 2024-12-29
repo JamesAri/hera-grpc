@@ -1,5 +1,5 @@
 module.exports = {
-	protoPath: __dirname + '/proto/schema.proto',
+	protoPath: __dirname + '/chat.proto',
 	loadOptions: {
 		keepCase: true,
 		longs: String,

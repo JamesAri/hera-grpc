@@ -1,27 +1,20 @@
-const grpc = require('@grpc/grpc-js')
 var fs = require('fs')
 var async = require('async')
 var _ = require('lodash')
 
-const { getServiceStubConstructor } = require('../../lib/utils')
-const serviceConfig = require('../shared/services/poi-service/service-config')
-
-const PoiServiceStub = getServiceStubConstructor(serviceConfig)
-
-const poiService = new PoiServiceStub('localhost:50051', grpc.credentials.createInsecure())
-
 const COORD_FACTOR = 1e7
+
+let client = null
 
 /**
  * List of feature objects at points that have been requested so far.
  */
 var feature_list = []
 
-fs.readFile(__dirname + '/../shared/services/poi-service/poi-db-mock.json', function(err, data) {
+fs.readFile(__dirname + '/../shared/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })
-
 
 /**
  * Run the getFeature demo. Calls getFeature with a point known to have a
@@ -62,8 +55,8 @@ function runGetFeature(callback) {
 		latitude: 0,
 		longitude: 0,
 	}
-	poiService.getFeature(point1, featureCallback)
-	poiService.getFeature(point2, featureCallback)
+	client.service.getFeature(point1, featureCallback)
+	client.service.getFeature(point2, featureCallback)
 }
 
 /**
@@ -84,7 +77,7 @@ function runListFeatures(callback) {
 		},
 	}
 	console.log('Looking for features between 40, -75 and 42, -73')
-	var call = poiService.listFeatures(rectangle)
+	var call = client.service.listFeatures(rectangle)
 	call.on('data', function (feature) {
 		console.log(
 			'Found feature called "' +
@@ -106,7 +99,7 @@ function runListFeatures(callback) {
  */
 function runRecordRoute(callback) {
 	var num_points = 10
-	var call = poiService.recordRoute(function (error, stats) {
+	var call = client.service.recordRoute(function (error, stats) {
 		if (error) {
 			callback(error)
 			return
@@ -154,7 +147,7 @@ function runRecordRoute(callback) {
  * @param {function} callback Called when the demo is complete
  */
 function runRouteChat(callback) {
-	var call = poiService.routeChat()
+	var call = client.service.routeChat()
 	call.on('data', function (note) {
 		console.log('Got message "' + note.message + '" at ' + note.location.latitude + ', ' + note.location.longitude)
 	})
@@ -202,18 +195,10 @@ function runRouteChat(callback) {
 /**
  * Run all of the demos in order
  */
-function main() {
+function run(_client) {
+	client = _client // hack
 	async.series([runGetFeature, runListFeatures, runRecordRoute, runRouteChat])
 }
 
-if (require.main === module) {
-	main()
-}
 
-exports.runGetFeature = runGetFeature
-
-exports.runListFeatures = runListFeatures
-
-exports.runRecordRoute = runRecordRoute
-
-exports.runRouteChat = runRouteChat
+module.exports = run
