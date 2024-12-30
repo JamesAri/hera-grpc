@@ -11,7 +11,7 @@ let client = null
  */
 var feature_list = []
 
-fs.readFile(__dirname + '/../shared/poi-db-mock.json', function(err, data) {
+fs.readFile(__dirname + '/../../shared/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })

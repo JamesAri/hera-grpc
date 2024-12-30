@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const grpc = require('@grpc/grpc-js')
 
 // TODO: should be part of proto repo?
-const MESSAGE_TYPES = require('../shared/const/message-types')
+const MESSAGE_TYPES = require('../../shared/const/message-types')
 
 module.exports = class Chat {
 	constructor(client) {

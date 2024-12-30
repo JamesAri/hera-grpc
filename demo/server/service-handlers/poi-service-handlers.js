@@ -11,7 +11,7 @@ var COORD_FACTOR = 1e7
 var feature_list = []
 
 // Mock db
-fs.readFile(__dirname + '/../shared/poi-db-mock.json', function(err, data) {
+fs.readFile(__dirname + '/../../shared/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })

@@ -1,6 +1,6 @@
 // Business logic - gRPC service implementation
 
-const MESSAGE_TYPES = require('../shared/const/message-types')
+const MESSAGE_TYPES = require('../../shared/const/message-types')
 
 class ChatService {
 	constructor() {
