@@ -1,5 +1,6 @@
 const readline = require('readline')
-const crypto = require("crypto")
+const crypto = require('crypto')
+const grpc = require('@grpc/grpc-js')
 
 // TODO: should be part of proto repo?
 const MESSAGE_TYPES = require('../shared/const/message-types')
@@ -11,6 +12,8 @@ module.exports = class Chat {
 		this._prepareChatCli = this._prepareChatCli.bind(this)
 		this._runChatRoom = this._runChatRoom.bind(this)
 
+		this.username = process.argv[2] || crypto.randomBytes(12).toString('hex')
+
 		this.rl = readline.createInterface({
 			input: process.stdin,
 			output: process.stdout,
@@ -20,14 +23,15 @@ module.exports = class Chat {
 	}
 
 	start() {
-		this.stream = this.client.service.connectChat()
+		const metadata = new grpc.Metadata()
+		metadata.add('x-client-id', this.username)
+		this.stream = this.client.service.connectChat(metadata)
 		this._authenticate()
 		this._prepareChatCli()
 		this._runChatRoom()
 	}
 
 	_authenticate() {
-		this.username = process.argv[2] || crypto.randomBytes(12).toString('hex')
 		console.log(`Authenticating as ${this.username}`)
 		this.stream.write({ type: MESSAGE_TYPES.AUTH, userName: this.username })
 	}
