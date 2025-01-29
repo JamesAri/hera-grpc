@@ -6,3 +6,5 @@ public/
 .nyc_output/
 npm-debug.log
 .eslintcache
+
+downloads/

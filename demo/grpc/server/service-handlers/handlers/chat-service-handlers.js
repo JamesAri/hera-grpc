@@ -1,6 +1,4 @@
-// Business logic - gRPC service implementation
-
-const MESSAGE_TYPES = require('../../shared/const/message-types')
+const MESSAGE_TYPES = require('../../../shared/const/message-types')
 
 class ChatService {
 	constructor() {
@@ -8,18 +6,20 @@ class ChatService {
 		this._multicast = this._multicast.bind(this)
 		this._broadcast = this._broadcast.bind(this)
 		this._endConnection = this._endConnection.bind(this)
+		this.connectChat = this.connectChat.bind(this)
 
-		this._activeConnections = new Map()
+		this.activeConnections = new Map()
 	}
 
 	_removeConnection(clientId, stream) {
+		console.log(`[-] Removing connection with client ID ${clientId}`)
 		if (clientId) {
-			this._activeConnections.delete(clientId)
+			this.activeConnections.delete(clientId)
 		}
 		if (stream) {
-			for (const [clientId2, conn] of this._activeConnections) {
+			for (const [clientId2, conn] of this.activeConnections) {
 				if (conn.stream === stream) {
-					this._activeConnections.delete(clientId2)
+					this.activeConnections.delete(clientId2)
 					if (clientId) {
 						console.error(`[!] Removed connection with client ID ${clientId2} that shared stream with client ID ${clientId}`)
 					}
@@ -30,7 +30,7 @@ class ChatService {
 	}
 
 	_multicast(message, fromClientId) {
-		for (const [clientId, conn] of this._activeConnections) {
+		for (const [clientId, conn] of this.activeConnections) {
 			if (clientId === fromClientId) {
 				continue
 			}
@@ -39,7 +39,7 @@ class ChatService {
 	}
 
 	_broadcast(message) {
-		for (const conn of this._activeConnections.values()) {
+		for (const conn of this.activeConnections.values()) {
 			conn.stream.write(message)
 		}
 	}
@@ -51,7 +51,7 @@ class ChatService {
 	}
 
 	_getConnection(clientId, stream) {
-		const conn = this._activeConnections.get(clientId)
+		const conn = this.activeConnections.get(clientId)
 		if (!conn) {
 			this._endConnection(stream, 'Connection not found')
 			throw new Error('Connection not found')
@@ -70,19 +70,21 @@ class ChatService {
 	}
 
 	connectChat(stream) {
-		const clientId = stream.metadata.get('x-client-id')
+		const headers = stream.metadata.getMap()
 
-		if (!clientId) {
+		if (!headers['x-client-id']) {
 			this._endConnection(stream, '[-] Client id not provided, disconnecting')
 			return
 		}
 
-		console.log(`[.] New client with x-client-id ${clientId} trying to connect`)
+		const clientId = headers['x-client-id']
+
+		console.log(`[.] New client with id ${clientId} trying to connect`)
 
 		stream.on('data', (message) => {
 			switch (message.type) {
 			case MESSAGE_TYPES.AUTH:
-				if (this._activeConnections.has(clientId)) {
+				if (this.activeConnections.has(clientId)) {
 					this._endConnection(stream, '[-] Client with the same id already authenticated, disconnecting')
 					return
 				}
@@ -92,12 +94,12 @@ class ChatService {
 					return
 				}
 
-				if (this._activeConnections.values().some(({username}) => username === message.userName)) {
+				if (this.activeConnections.values().some(({username}) => username === message.userName)) {
 					this._endConnection(stream, `[-] Username "${message.userName}" already taken, disconnecting`)
 					return
 				}
 
-				this._activeConnections.set(clientId, { username: message.userName, stream })
+				this.activeConnections.set(clientId, { username: message.userName, stream })
 				this._broadcast({ type: MESSAGE_TYPES.CHAT, content: `${message.userName} joined the chat` })
 
 				console.log(`[+] User "${message.userName}" authenticated`)
@@ -118,6 +120,14 @@ class ChatService {
 			this._removeConnection(clientId, stream)
 			this._broadcast({ type: MESSAGE_TYPES.CHAT, content: `${username} left the chat` })
 			console.log(`[-] User "${username}" disconnected`)
+		})
+
+		stream.on('cancelled', () => {
+			// handle differently than end?
+		})
+
+		stream.on('error', (error) => {
+			console.log('Error from client:', error.message)
 		})
 	}
 }

@@ -1,24 +1,8 @@
-const {getPackageDefinition, getServiceStub} = require('./utils')
-
-const chatConfig = require('./chat/config')
-const poiConfig = require('./poi/config')
-
-const loadService = (config) => {
-	const packageDefinition = getPackageDefinition(config)
-	const serviceStub = getServiceStub(packageDefinition, config.serviceName)
-	return {serviceStub, packageDefinition}
-}
-
-const chatServiceLoader = () => {
-	return loadService(chatConfig)
-}
-
-const poiServiceLoader = () => {
-	return loadService(poiConfig)
-}
+const {loadServiceFactory} = require('../lib/utils')
 
 module.exports = {
-	chatServiceLoader,
-	poiServiceLoader
+	chatServiceLoader: loadServiceFactory(require('./chat/config')),
+	poiServiceLoader: loadServiceFactory(require('./poi/config')),
+	fileShareServiceLoader: loadServiceFactory(require('./file-share/config')),
 }
 

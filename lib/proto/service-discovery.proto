@@ -1,0 +1,52 @@
+syntax="proto3";
+
+service ServiceDiscovery {
+	rpc Connect(stream ControlBlock) returns (stream ServerData) {}
+
+	rpc RegisterService(stream FileChunk) returns (RegisterServiceResult) {}
+
+	rpc GetService(Request) returns (stream FileChunk) {}
+}
+
+message Connection {
+	string host = 1;
+	uint32 port = 2;
+}
+
+enum Action {
+	CONNECT = 0;
+	CONNECTED = 1;
+}
+
+message Data {
+	string key = 1;
+	string value = 2;
+}
+
+message ControlBlock {
+	uint64 client_id = 1;
+	Connection connection = 2;
+	Action action = 3;
+}
+
+message ServerData {
+	Action action = 1;
+	repeated Data data = 2;
+}
+
+
+message Request {
+	uint64 client_id = 1;
+	string path = 2;
+	optional bool refetch_proto_file = 3;
+}
+
+message FileChunk {
+	bytes proto_file_chunk = 1;
+}
+
+message RegisterServiceResult {
+	bool success = 1;
+	optional string message = 2;
+}
+

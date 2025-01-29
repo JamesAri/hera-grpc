@@ -78,16 +78,20 @@ module.exports = class Chat {
 				}
 				return
 			}
-			console.log('Error, unknown message type received:', message.type)
+			console.log('Error: unknown message type received:', message.type)
 		})
 
-		this.stream.on('end', function() {
+		this.stream.on('end', () => {
 			console.log('Server terminated connection')
 			this.rl.close()
 		})
 
-		this.stream.on('error', function(_err) {
-			console.error('Lost connection to server')
+		this.stream.on('status', (status) => {
+			console.log(status) // not for streams :) - Status of the call when it has completed.
+		})
+
+		this.stream.on('error', (err /** ServiceError */) => {
+			console.error('Lost connection to server:', err.message)
 			process.exit(1)
 		})
 	}

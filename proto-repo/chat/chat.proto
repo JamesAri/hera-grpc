@@ -8,8 +8,8 @@ service ChatRoom {
 }
 
 enum MessageType {
-	auth = 0;
-	chat = 1;
+	AUTH = 0;
+	CHAT = 1;
 }
 
 message Message {

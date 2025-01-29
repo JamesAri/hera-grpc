@@ -1,5 +1,3 @@
-// Business logic - gRPC service implementation
-
 var _ = require('lodash')
 var fs = require('fs')
 
@@ -11,7 +9,7 @@ var COORD_FACTOR = 1e7
 var feature_list = []
 
 // Mock db
-fs.readFile(__dirname + '/../../shared/poi-db-mock.json', function(err, data) {
+fs.readFile(__dirname + '/../../../shared/poi-db-mock.json', function(err, data) {
 	if (err) throw err
 	feature_list = JSON.parse(data)
 })
@@ -116,7 +114,6 @@ function getDistance(start, end) {
  *     response to
  */
 function recordRoute(call, callback) {
-	console.log('Recording route')
 	var point_count = 0
 	var feature_count = 0
 	var distance = 0

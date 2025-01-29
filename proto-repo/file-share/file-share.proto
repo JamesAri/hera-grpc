@@ -1,0 +1,18 @@
+syntax="proto3";
+
+service FileShare {
+	// CLIENT STREAMING
+	// stream files from client to server
+	rpc DownloadFile(stream FileChunk) returns (Result) {}
+}
+
+
+message FileChunk {
+	bytes chunk = 1;
+}
+
+
+message Result {
+	bool success = 1;
+	optional string message = 2;
+}
