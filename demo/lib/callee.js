@@ -18,15 +18,24 @@ function main_callee() {
 		port: 50052,
 	})
 
-	sc.on('close', () => {
-		sc.cleanup()
-	})
-
 	try {
-		sc.connect()
+		sc.createSession()
+
 		sc.on('connected', () => {
 			sc.registerService(chatServiceProtoFile, '/service_test')
 			console.log('main_callee - Connected to the service router')
+		})
+
+		sc.on('error', (err) => {
+			sc.cleanup()
+			process.exitCode = 1
+			console.error(err.message)
+
+		})
+
+		sc.on('close', () => {
+			sc.cleanup()
+			process.exit()
 		})
 	} catch (error) {
 		console.error(error)

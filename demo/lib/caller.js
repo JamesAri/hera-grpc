@@ -13,7 +13,7 @@ function main_caller() {
 	})
 
 	try {
-		sc.connect()
+		sc.createSession()
 		sc.on('connected', () => {
 			console.log('main_caller - Connected to the service router')
 			sc.callService(request)

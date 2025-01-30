@@ -1,7 +1,7 @@
 syntax="proto3";
 
 service ServiceDiscovery {
-	rpc Connect(stream ControlBlock) returns (stream ServerData) {}
+	rpc CreateSession(stream SessionControl) returns (stream SessionUpdate) {}
 
 	rpc RegisterService(stream FileChunk) returns (RegisterServiceResult) {}
 
@@ -23,17 +23,16 @@ message Data {
 	string value = 2;
 }
 
-message ControlBlock {
-	uint64 client_id = 1;
-	Connection connection = 2;
-	Action action = 3;
+message SessionControl {
+	Action action = 1;
+	optional uint64 client_id = 2;
+	optional Connection connection = 3;
 }
 
-message ServerData {
+message SessionUpdate {
 	Action action = 1;
 	repeated Data data = 2;
 }
-
 
 message Request {
 	uint64 client_id = 1;
