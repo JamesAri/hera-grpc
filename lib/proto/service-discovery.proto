@@ -1,7 +1,7 @@
 syntax="proto3";
 
 service ServiceDiscovery {
-	rpc CreateSession(stream SessionControl) returns (stream SessionUpdate) {}
+	rpc CreateSession(stream ClientSessionMessage) returns (stream RouterSessionMessage) {}
 
 	rpc RegisterService(stream FileChunk) returns (RegisterServiceResult) {}
 
@@ -16,6 +16,7 @@ message Connection {
 enum Action {
 	CONNECT = 0;
 	CONNECTED = 1;
+	ERROR = 2;
 }
 
 message Data {
@@ -23,15 +24,22 @@ message Data {
 	string value = 2;
 }
 
-message SessionControl {
+message Error {
+	string message = 1;
+}
+
+message ClientSessionMessage {
 	Action action = 1;
 	optional uint64 client_id = 2;
 	optional Connection connection = 3;
+	optional Error error = 4;
 }
 
-message SessionUpdate {
+message RouterSessionMessage {
 	Action action = 1;
-	repeated Data data = 2;
+	optional bytes proto_file_chunk = 2;
+	optional bool last_chunk = 3;
+	optional Error error = 4;
 }
 
 message Request {

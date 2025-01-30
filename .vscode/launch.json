@@ -11,25 +11,25 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/server/index.js"
+			"program": "${workspaceFolder}/demo/lib/server.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Debug Client1",
+			"name": "Debug Callee",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/client/hera-client/index.js"
+			"program": "${workspaceFolder}/demo/lib/callee.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Debug Client2",
+			"name": "Debug Caller",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/client/hera-client/index2.js"
+			"program": "${workspaceFolder}/demo/lib/caller.js"
 		},
 		{
 			"type": "node",

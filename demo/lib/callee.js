@@ -1,3 +1,5 @@
+const path = require('path')
+
 const ServiceClient = require('../../lib/service-client')
 const GRPCServer = require('../../lib/grpc-server')
 
@@ -5,10 +7,11 @@ const GRPCServer = require('../../lib/grpc-server')
 const { chatServiceLoader } = require('../../proto-repo')
 const { chatServiceHandlers } = require('../grpc/server/service-handlers')
 
-function main_callee() {
+function callee() {
 	// Mock a registered service
 	const server = new GRPCServer()
-	const chatServiceProtoFile = __dirname + '/../../proto-repo/chat/chat.proto'
+	const chatServiceProtoFile = path.join(__dirname, '/../../proto-repo/chat/chat.proto')
+
 	server.registerService(chatServiceLoader, chatServiceHandlers)
 	server.listen('0.0.0.0', 50052)
 
@@ -27,10 +30,8 @@ function main_callee() {
 		})
 
 		sc.on('error', (err) => {
-			sc.cleanup()
 			process.exitCode = 1
 			console.error(err.message)
-
 		})
 
 		sc.on('close', () => {
@@ -38,10 +39,10 @@ function main_callee() {
 			process.exit()
 		})
 	} catch (error) {
-		console.error(error)
+		console.error(`Unexpected error: ${error.message}`)
 	}
 }
 
 if (require.main === module) {
-	main_callee()
+	callee()
 }

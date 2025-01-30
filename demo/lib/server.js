@@ -5,4 +5,9 @@ const sr = new ServiceRouter({
 	port: 50051,
 })
 
+sr.on('error', (err) => {
+	console.error(err.message)
+	process.exitCode = 1
+})
+
 sr.listen()
