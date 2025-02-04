@@ -8,15 +8,15 @@ service ServiceDiscovery {
 	rpc GetService(Request) returns (stream FileChunk) {}
 }
 
+// ============= CreateSession ============= //
+enum Action {
+	CONNECT = 0;
+	ERROR = 1;
+}
+
 message Connection {
 	string host = 1;
 	uint32 port = 2;
-}
-
-enum Action {
-	CONNECT = 0;
-	CONNECTED = 1;
-	ERROR = 2;
 }
 
 message Data {
@@ -42,11 +42,7 @@ message RouterSessionMessage {
 	optional Error error = 4;
 }
 
-message Request {
-	uint64 client_id = 1;
-	string path = 2;
-	optional bool refetch_proto_file = 3;
-}
+// ============= RegisterService ============= //
 
 message FileChunk {
 	bytes proto_file_chunk = 1;
@@ -57,3 +53,10 @@ message RegisterServiceResult {
 	optional string message = 2;
 }
 
+// ============= GetService ============= //
+
+message Request {
+	uint64 client_id = 1;
+	string path = 2;
+	optional bool refetch_proto_file = 3;
+}

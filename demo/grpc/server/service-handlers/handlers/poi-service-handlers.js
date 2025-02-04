@@ -1,17 +1,18 @@
-var _ = require('lodash')
-var fs = require('fs')
+const _ = require('lodash')
+const path = require('path')
+const fs = require('fs')
 
-var COORD_FACTOR = 1e7
+const COORD_FACTOR = 1e7
 
 /**
  * List of feature objects at points that have been requested so far.
  */
-var feature_list = []
+let featureList = []
 
 // Mock db
-fs.readFile(__dirname + '/../../../shared/poi-db-mock.json', function(err, data) {
+fs.readFile(path.join(__dirname, '/../../../shared/poi-db-mock.json'), function (err, data) {
 	if (err) throw err
-	feature_list = JSON.parse(data)
+	featureList = JSON.parse(data)
 })
 
 /**
@@ -22,19 +23,18 @@ fs.readFile(__dirname + '/../../../shared/poi-db-mock.json', function(err, data)
  */
 function checkFeature(point) {
 	console.log('Checking feature for point:', point)
-	var feature
+	let feature
 	// Check if there is already a feature object for the given point
-	for (var i = 0; i < feature_list.length; i++) {
-		feature = feature_list[i]
-		if (feature.location.latitude === point.latitude &&
-        feature.location.longitude === point.longitude) {
+	for (let i = 0; i < featureList.length; i++) {
+		feature = featureList[i]
+		if (feature.location.latitude === point.latitude && feature.location.longitude === point.longitude) {
 			return feature
 		}
 	}
-	var name = ''
+	const name = ''
 	feature = {
 		name: name,
-		location: point
+		location: point,
 	}
 	return feature
 }
@@ -57,21 +57,23 @@ function getFeature(call, callback) {
  */
 function listFeatures(call) {
 	console.log('Listing features')
-	var lo = call.request.lo
-	var hi = call.request.hi
-	var left = _.min([lo.longitude, hi.longitude])
-	var right = _.max([lo.longitude, hi.longitude])
-	var top = _.max([lo.latitude, hi.latitude])
-	var bottom = _.min([lo.latitude, hi.latitude])
+	const lo = call.request.lo
+	const hi = call.request.hi
+	const left = _.min([lo.longitude, hi.longitude])
+	const right = _.max([lo.longitude, hi.longitude])
+	const top = _.max([lo.latitude, hi.latitude])
+	const bottom = _.min([lo.latitude, hi.latitude])
 	// For each feature, check if it is in the given bounding box
-	_.each(feature_list, function(feature) {
+	_.each(featureList, function (feature) {
 		if (feature.name === '') {
 			return
 		}
-		if (feature.location.longitude >= left &&
-        feature.location.longitude <= right &&
-        feature.location.latitude >= bottom &&
-        feature.location.latitude <= top) {
+		if (
+			feature.location.longitude >= left &&
+			feature.location.longitude <= right &&
+			feature.location.latitude >= bottom &&
+			feature.location.latitude <= top
+		) {
 			call.write(feature)
 		}
 	})
@@ -88,20 +90,20 @@ function listFeatures(call) {
 function getDistance(start, end) {
 	console.log('Calculating distance between points:', start, end)
 	function toRadians(num) {
-		return num * Math.PI / 180
+		return (num * Math.PI) / 180
 	}
-	var R = 6371000  // earth radius in metres
-	var lat1 = toRadians(start.latitude / COORD_FACTOR)
-	var lat2 = toRadians(end.latitude / COORD_FACTOR)
-	var lon1 = toRadians(start.longitude / COORD_FACTOR)
-	var lon2 = toRadians(end.longitude / COORD_FACTOR)
+	const R = 6371000 // earth radius in metres
+	const lat1 = toRadians(start.latitude / COORD_FACTOR)
+	const lat2 = toRadians(end.latitude / COORD_FACTOR)
+	const lon1 = toRadians(start.longitude / COORD_FACTOR)
+	const lon2 = toRadians(end.longitude / COORD_FACTOR)
 
-	var deltalat = lat2-lat1
-	var deltalon = lon2-lon1
-	var a = Math.sin(deltalat/2) * Math.sin(deltalat/2) +
-      Math.cos(lat1) * Math.cos(lat2) *
-      Math.sin(deltalon/2) * Math.sin(deltalon/2)
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+	const deltalat = lat2 - lat1
+	const deltalon = lon2 - lon1
+	const a =
+		Math.sin(deltalat / 2) * Math.sin(deltalat / 2) +
+		Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltalon / 2) * Math.sin(deltalon / 2)
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 	return R * c
 }
 
@@ -114,38 +116,38 @@ function getDistance(start, end) {
  *     response to
  */
 function recordRoute(call, callback) {
-	var point_count = 0
-	var feature_count = 0
-	var distance = 0
-	var previous = null
+	let pointCount = 0
+	let featureCount = 0
+	let distance = 0
+	let previous = null
 	// Start a timer
-	var start_time = process.hrtime()
-	call.on('data', function(point) {
-		point_count += 1
+	const startTime = process.hrtime()
+	call.on('data', function (point) {
+		pointCount += 1
 		if (checkFeature(point).name !== '') {
-			feature_count += 1
+			featureCount += 1
 		}
 		/* For each point after the first, add the incremental distance from the
-     * previous point to the total distance value */
+		 * previous point to the total distance value */
 		if (previous != null) {
 			distance += getDistance(previous, point)
 		}
 		previous = point
 	})
-	call.on('end', function() {
+	call.on('end', function () {
 		console.log('Route recording complete')
 		callback(null, {
-			point_count: point_count,
-			feature_count: feature_count,
+			point_count: pointCount,
+			feature_count: featureCount,
 			// Cast the distance to an integer
-			distance: distance|0,
+			distance: distance | 0,
 			// End the timer
-			elapsed_time: process.hrtime(start_time)[0]
+			elapsed_time: process.hrtime(startTime)[0],
 		})
 	})
 }
 
-var route_notes = {}
+const routeNotes = {}
 
 /**
  * Turn the point into a dictionary key.
@@ -163,21 +165,22 @@ function pointKey(point) {
  */
 function routeChat(call) {
 	console.log('Routing chat')
-	call.on('data', function(note) {
-		var key = pointKey(note.location)
+	call.on('data', function (note) {
+		const key = pointKey(note.location)
 		/* For each note sent, respond with all previous notes that correspond to
-     * the same point */
-		if (route_notes.hasOwnProperty(key)) {
-			_.each(route_notes[key], function(note) {
+		 * the same point */
+		// eslint-disable-next-line no-prototype-builtins
+		if (routeNotes.hasOwnProperty(key)) {
+			_.each(routeNotes[key], function (note) {
 				call.write(note)
 			})
 		} else {
-			route_notes[key] = []
+			routeNotes[key] = []
 		}
 		// Then add the new note to the list
-		route_notes[key].push(JSON.parse(JSON.stringify(note)))
+		routeNotes[key].push(JSON.parse(JSON.stringify(note)))
 	})
-	call.on('end', function() {
+	call.on('end', function () {
 		console.log('Chat routing complete')
 		call.end()
 	})

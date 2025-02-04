@@ -1,8 +1,10 @@
 const ServiceRouter = require('../../lib/service-router')
+const config = require('./config')
 
 const sr = new ServiceRouter({
-	host: 'localhost',
-	port: 50051,
+	host: config.grpcServer.host,
+	port: config.grpcServer.port,
+	grpcServer: config.grpcServer
 })
 
 sr.on('error', (err) => {

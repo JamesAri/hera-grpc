@@ -1,30 +1,34 @@
 const ServiceClient = require('../../lib/service-client')
+const config = require('./config')
+const zookeeper = require('./di').zookeeper
+const debug = require('debug')('caller')
+
+const Chat = require('../grpc/client/chat/chat')
 
 function caller() {
-	const sc = new ServiceClient()
-
-	const request = {
-		path: '/service_test',
-		refetch_proto_file: true,
-	}
+	const sc = new ServiceClient({config, zookeeper})
 
 	try {
-		sc.createSession()
 		sc.on('connected', () => {
-			console.log('main_caller - Connected to the service router')
-			sc.callService(request)
+			debug('Connected to the service router')
+
+			sc.callService('/slechtaj-1.0.0/dev~service_route/test', (service) => {
+				const chat = new Chat({ service })
+				chat.start()
+			})
 		})
 
 		sc.on('error', (err) => {
 			process.exitCode = 1
 			console.error(err.message)
+			sc.close() // should be done automatically?
 		})
 
 		sc.on('close', () => {
-			sc.cleanup()
 			process.exit()
 		})
 
+		sc.connect()
 	} catch (error) {
 		console.error(`Unexpected error: ${error.message}`)
 	}

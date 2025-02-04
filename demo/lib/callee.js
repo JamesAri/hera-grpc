@@ -1,43 +1,58 @@
-const path = require('path')
-
 const ServiceClient = require('../../lib/service-client')
-const GRPCServer = require('../../lib/grpc-server')
+const config = require('./config')
+const zookeeper = require('./di').zookeeper
+const fs = require('fs')
+const debug = require('debug')('callee')
 
 // Mock some service that we want to register
-const { chatServiceLoader } = require('../../proto-repo')
+const chatLoadConfig = require('../../proto-repo/chat/config')
 const { chatServiceHandlers } = require('../grpc/server/service-handlers')
 
+const serviceInfo = {
+	appName: 'TestAppName',
+	serviceName: 'TestService',
+	version: '1.0.0',
+	host: 'localhost',
+	port: 50051,
+	route: '/slechtaj-1.0.0/dev~service_route/test',
+	loadConfig: chatLoadConfig,
+}
+
+const protoFileBuffer = fs.readFileSync(chatLoadConfig.protoPath)
+
+const protoFiles = [
+	{
+		name: 'test.proto',
+		buffer: protoFileBuffer,
+	},
+	{
+		name: 'test.js',
+		buffer: protoFileBuffer,
+	}
+]
+
 function callee() {
-	// Mock a registered service
-	const server = new GRPCServer()
-	const chatServiceProtoFile = path.join(__dirname, '/../../proto-repo/chat/chat.proto')
-
-	server.registerService(chatServiceLoader, chatServiceHandlers)
-	server.listen('0.0.0.0', 50052)
-
-	// Use service client from lib to connect to the service router
-	const sc = new ServiceClient({
-		host: '0.0.0.0',
-		port: 50052,
-	})
+	const sc = new ServiceClient({ config, zookeeper })
 
 	try {
-		sc.createSession()
-
 		sc.on('connected', () => {
-			sc.registerService(chatServiceProtoFile, '/service_test')
-			console.log('main_callee - Connected to the service router')
+			debug('Connected to the service router')
+			sc.registerService(serviceInfo, protoFiles, chatServiceHandlers)
+			sc.listen()
 		})
 
 		sc.on('error', (err) => {
 			process.exitCode = 1
 			console.error(err.message)
+
+			sc.close() // should be done automatically?
 		})
 
 		sc.on('close', () => {
-			sc.cleanup()
 			process.exit()
 		})
+
+		sc.connect()
 	} catch (error) {
 		console.error(`Unexpected error: ${error.message}`)
 	}
