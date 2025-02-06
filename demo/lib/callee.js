@@ -1,35 +1,21 @@
+const debug = require('debug')('callee')
+
 const ServiceClient = require('../../lib/service-client')
 const config = require('./config')
 const zookeeper = require('./di').zookeeper
-const fs = require('fs')
-const debug = require('debug')('callee')
 
 // Mock some service that we want to register
-const chatLoadConfig = require('../../proto-repo/chat/config')
+const chatLoadConfig = require('../proto-repo/chat/config')
 const { chatServiceHandlers } = require('../grpc/server/service-handlers')
 
 const serviceInfo = {
-	appName: 'TestAppName',
-	serviceName: 'TestService',
+	serviceName: chatLoadConfig.serviceName,
 	version: '1.0.0',
-	host: 'localhost',
-	port: 50051,
 	route: '/slechtaj-1.0.0/dev~service_route/test',
-	loadConfig: chatLoadConfig,
+	loadConfig: chatLoadConfig.loadOptions,
 }
 
-const protoFileBuffer = fs.readFileSync(chatLoadConfig.protoPath)
-
-const protoFiles = [
-	{
-		name: 'test.proto',
-		buffer: protoFileBuffer,
-	},
-	{
-		name: 'test.js',
-		buffer: protoFileBuffer,
-	}
-]
+const protoFiles = [chatLoadConfig.protoPath]
 
 function callee() {
 	const sc = new ServiceClient({ config, zookeeper })

@@ -4,25 +4,32 @@ const path = require('path')
 const ZooKeeper = require('../../lib/zookeeper')
 const debug = require('debug')('main')
 
+const {getProtoJsonDescriptorBuffer} = require('../../lib/utils')
+
 const config = {
 	zookeeper: 'zk://localhost:2181/hera-test',
 }
 
-const zk = new ZooKeeper({ config })
-
-zk.connect()
+const zk = new ZooKeeper({config})
 
 const TEST_SERVICE_ROUTE = '/slechtaj-1.0.0/dev~service_route/test'
+
+const TEST_FILES = [
+	path.join(__dirname, 'chat.proto'),
+	// we don't need to include all paths manually, protobufjs will resolve them
+	// path.join(__dirname, 'nested/messagetype.proto'),
+]
+
+zk.connect()
 
 zk.on('connected', async () => {
 	debug('Connected to ZooKeeper')
 
 	// SERVER SIDE
 
-	const protoFileBuffer = fs.readFileSync(path.join(__dirname, 'index.js'))
+	const protoFileBuffer = getProtoJsonDescriptorBuffer(TEST_FILES)
 
 	const serviceInfo = {
-		appName: 'TestAppName',
 		serviceName: 'TestService',
 		version: '1.0.0',
 		host: 'localhost',
@@ -37,19 +44,7 @@ zk.on('connected', async () => {
 		},
 	}
 
-	const protoFiles = [
-		{
-			name: 'test-service.proto',
-			buffer: protoFileBuffer,
-			main: true,
-		},
-		{
-			name: 'test-service.js',
-			buffer: protoFileBuffer,
-		}
-	]
-
-	zk.register(serviceInfo, protoFiles, (err, res) => {
+	zk.register(serviceInfo, protoFileBuffer, (err, res) => {
 		if (err) {
 			console.error(err)
 			return
@@ -85,26 +80,16 @@ zk.on('connected', async () => {
 		debug('Random service proto:')
 		debug(rndService.proto)
 
-		const protoFiles = []
-		for (const protoFile of rndService.proto) {
-			const buffer = await zk.getProtoFile(protoFile.znode)
-			protoFiles.push({
-				name: protoFile.name,
-				buffer: buffer,
-				main: protoFile.main,
-			})
-		}
+		const buffer = await zk.getProtoFile(rndService.proto)
 
 		zk.disconnect()
 		debug('Disconnected from ZooKeeper')
 
-		if (!protoFiles) {
-			console.error('Proto files not found')
+		if (!buffer) {
+			console.error('Proto buffer not found')
 			return
 		}
-		for (const protoFile of protoFiles) {
-			fs.writeFileSync(path.join(__dirname, protoFile.name), protoFile.buffer)
-		}
+		fs.writeFileSync(path.join(__dirname, 'out.json'), buffer)
 	})
 })
 

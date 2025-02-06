@@ -11,7 +11,7 @@ const {
 	poiServiceLoader,
 	chatServiceLoader,
 	fileShareServiceLoader,
-} = require('../../../proto-repo')
+} = require('../../proto-repo')
 
 const server = new GRPCServer()
 

@@ -1,7 +1,7 @@
 const runPoiDemo = require('./poi')
 const GRPCClient = require('../../../../lib/grpc-client')
 
-const {poiServiceLoader} = require('../../../../proto-repo')
+const {poiServiceLoader} = require('../../../proto-repo')
 
 function main() {
 	const client = new GRPCClient(poiServiceLoader)

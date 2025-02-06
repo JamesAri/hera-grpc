@@ -1,7 +1,7 @@
 const ShareFileService = require('./file-share')
 const GRPCClient = require('../../../../lib/grpc-client')
 
-const {fileShareServiceLoader} = require('../../../../proto-repo')
+const {fileShareServiceLoader} = require('../../../proto-repo')
 
 function main() {
 	const client = new GRPCClient(fileShareServiceLoader)
