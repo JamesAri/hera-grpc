@@ -111,7 +111,7 @@ class ChatService {
 				break
 			default:
 				this._endConnection(stream, `[!] Unknown message type: ${message.type}`)
-				return
+
 			}
 		})
 

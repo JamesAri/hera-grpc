@@ -6,7 +6,7 @@ const {poiService} = require('../../../proto-repo')
 function main() {
 	const client = new GRPCClient(poiService)
 	client.connect('localhost', 50051)
-	runPoiDemo(client)
+	runPoiDemo(client.service)
 }
 
 if (require.main === module) {

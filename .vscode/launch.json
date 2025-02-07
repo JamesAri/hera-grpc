@@ -11,7 +11,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/lib/callee.js"
+			"program": "${workspaceFolder}/demo/lib/multiservice/callee.js"
 		},
 		{
 			"type": "node",
@@ -20,7 +20,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/lib/caller.js"
+			"program": "${workspaceFolder}/demo/lib/multiservice/caller.js"
 		},
 		{
 			"type": "node",

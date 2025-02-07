@@ -1,19 +1,20 @@
-var fs = require('fs')
-var async = require('async')
-var _ = require('lodash')
+const fs = require('fs')
+const async = require('async')
+const path = require('path')
+const _ = require('lodash')
 
 const COORD_FACTOR = 1e7
 
-let client = null
+let service = null
 
 /**
  * List of feature objects at points that have been requested so far.
  */
-var feature_list = []
+let featureList = []
 
-fs.readFile(__dirname + '/../../shared/poi-db-mock.json', function(err, data) {
+fs.readFile(path.join(__dirname, '/../../shared/poi-db-mock.json'), function(err, data) {
 	if (err) throw err
-	feature_list = JSON.parse(data)
+	featureList = JSON.parse(data)
 })
 
 /**
@@ -22,7 +23,7 @@ fs.readFile(__dirname + '/../../shared/poi-db-mock.json', function(err, data) {
  * @param {function} callback Called when this demo is complete
  */
 function runGetFeature(callback) {
-	var next = _.after(2, callback)
+	const next = _.after(2, callback)
 	function featureCallback(error, feature) {
 		if (error) {
 			callback(error)
@@ -47,16 +48,16 @@ function runGetFeature(callback) {
 		}
 		next()
 	}
-	var point1 = {
+	const point1 = {
 		latitude: 409146138,
 		longitude: -746188906,
 	}
-	var point2 = {
+	const point2 = {
 		latitude: 0,
 		longitude: 0,
 	}
-	client.service.getFeature(point1, featureCallback)
-	client.service.getFeature(point2, featureCallback)
+	service.getFeature(point1, featureCallback)
+	service.getFeature(point2, featureCallback)
 }
 
 /**
@@ -66,7 +67,7 @@ function runGetFeature(callback) {
  * @param {function} callback Called when this demo is complete
  */
 function runListFeatures(callback) {
-	var rectangle = {
+	const rectangle = {
 		lo: {
 			latitude: 400000000,
 			longitude: -750000000,
@@ -77,7 +78,7 @@ function runListFeatures(callback) {
 		},
 	}
 	console.log('Looking for features between 40, -75 and 42, -73')
-	var call = client.service.listFeatures(rectangle)
+	const call = service.listFeatures(rectangle)
 	call.on('data', function (feature) {
 		console.log(
 			'Found feature called "' +
@@ -98,8 +99,8 @@ function runListFeatures(callback) {
  * @param {function} callback Called when this demo is complete
  */
 function runRecordRoute(callback) {
-	var num_points = 10
-	var call = client.service.recordRoute(function (error, stats) {
+	const numPoints = 10
+	const call = service.recordRoute(function (error, stats) {
 		if (error) {
 			callback(error)
 			return
@@ -131,12 +132,12 @@ function runRecordRoute(callback) {
 			_.delay(callback, _.random(500, 1500))
 		}
 	}
-	var point_senders = []
-	for (var i = 0; i < num_points; i++) {
-		var rand_point = feature_list[_.random(0, feature_list.length - 1)]
-		point_senders[i] = pointSender(rand_point.location.latitude, rand_point.location.longitude)
+	const pointSenders = []
+	for (let i = 0; i < numPoints; i++) {
+		const randPoint = featureList[_.random(0, featureList.length - 1)]
+		pointSenders[i] = pointSender(randPoint.location.latitude, randPoint.location.longitude)
 	}
-	async.series(point_senders, function () {
+	async.series(pointSenders, function () {
 		call.end()
 	})
 }
@@ -147,14 +148,14 @@ function runRecordRoute(callback) {
  * @param {function} callback Called when the demo is complete
  */
 function runRouteChat(callback) {
-	var call = client.service.routeChat()
+	const call = service.routeChat()
 	call.on('data', function (note) {
 		console.log('Got message "' + note.message + '" at ' + note.location.latitude + ', ' + note.location.longitude)
 	})
 
 	call.on('end', callback)
 
-	var notes = [
+	const notes = [
 		{
 			location: {
 				latitude: 0,
@@ -184,8 +185,8 @@ function runRouteChat(callback) {
 			message: 'Fourth message',
 		},
 	]
-	for (var i = 0; i < notes.length; i++) {
-		var note = notes[i]
+	for (let i = 0; i < notes.length; i++) {
+		const note = notes[i]
 		console.log('Sending message "' + note.message + '" at ' + note.location.latitude + ', ' + note.location.longitude)
 		call.write(note)
 	}
@@ -195,8 +196,8 @@ function runRouteChat(callback) {
 /**
  * Run all of the demos in order
  */
-function run(_client) {
-	client = _client // hack
+function run(_service) {
+	service = _service // hack
 	async.series([runGetFeature, runListFeatures, runRecordRoute, runRouteChat])
 }
 
