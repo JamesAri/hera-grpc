@@ -9,26 +9,31 @@ function caller() {
 	const sc = new ServiceClient({config, zookeeper})
 
 	try {
-		sc.on('connected', () => {
-			debug('Connected to the service router')
+		sc.on('zkReady', () => {
+			debug('Zookeeper ready')
 
-			sc.callService('/slechtaj-1.0.0/dev~service_route/test', (service) => {
+			sc.connect()
+		})
+
+		sc.on('connected', () => {
+			debug('Connected to the service network')
+
+			sc.callService('/slechtaj-1.0.0/dev~service_route/chat', (service) => {
 				const chat = new Chat({ service })
 				chat.start()
 			})
 		})
 
-		sc.on('error', (err) => {
+		sc.on('error', (error) => {
 			process.exitCode = 1
-			console.error(err.message)
-			sc.close() // should be done automatically?
+			console.error(error)
 		})
 
 		sc.on('close', () => {
 			process.exit()
 		})
 
-		sc.connect()
+		sc.connectToZookeeper()
 	} catch (error) {
 		console.error(`Unexpected error: ${error.message}`)
 	}

@@ -1,5 +1,5 @@
 module.exports = {
-	protoPath: __dirname + '/file-share.proto',
+	filename: __dirname + '/file-share.proto',
 	loadOptions: {
 		keepCase: true,
 		longs: String,

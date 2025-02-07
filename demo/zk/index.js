@@ -12,12 +12,17 @@ const config = {
 
 const zk = new ZooKeeper({config})
 
-const TEST_SERVICE_ROUTE = '/slechtaj-1.0.0/dev~service_route/test'
+const TEST_SERVICE_ROUTE_1 = '/slechtaj-1.0.0/dev~service_route/test/chat'
+const TEST_SERVICE_ROUTE_2 = '/slechtaj-1.0.0/dev~service_route/test/messagetype'
 
-const TEST_FILES = [
+const TEST_FILES_1 = [
 	path.join(__dirname, 'chat.proto'),
 	// we don't need to include all paths manually, protobufjs will resolve them
 	// path.join(__dirname, 'nested/messagetype.proto'),
+]
+
+const TEST_FILES_2 = [
+	path.join(__dirname, 'nested/messagetype.proto'),
 ]
 
 zk.connect()
@@ -27,29 +32,48 @@ zk.on('connected', async () => {
 
 	// SERVER SIDE
 
-	const protoFileBuffer = getProtoJsonDescriptorBuffer(TEST_FILES)
+	const protoFileBuffer1 = getProtoJsonDescriptorBuffer(TEST_FILES_1)
+	const protoFileBuffer2 = getProtoJsonDescriptorBuffer(TEST_FILES_2)
+
+	const protoFiles = [
+		{
+			serviceName: 'Chat',
+			route: TEST_SERVICE_ROUTE_1,
+			buffer: protoFileBuffer1,
+			loadOptions: {
+				keepCase: true,
+				longs: String,
+				enums: String,
+				defaults: true,
+				oneofs: true,
+			},
+		},
+		{
+			serviceName: 'NoServiceActually',
+			route: TEST_SERVICE_ROUTE_2,
+			buffer: protoFileBuffer2,
+			loadOptions: {
+				keepCase: true,
+				longs: String,
+				enums: String,
+				defaults: true,
+				oneofs: true,
+			},
+		}
+	]
 
 	const serviceInfo = {
-		serviceName: 'TestService',
-		version: '1.0.0',
 		host: 'localhost',
 		port: 50052,
-		route: TEST_SERVICE_ROUTE,
-		loadOptions: {
-			keepCase: true,
-			longs: String,
-			enums: String,
-			defaults: true,
-			oneofs: true,
-		},
 	}
 
-	zk.register(serviceInfo, protoFileBuffer, (err, res) => {
+	zk.register(serviceInfo, protoFiles, (err, res) => {
 		if (err) {
 			console.error(err)
 			return
 		}
 		debug('Service registered:', res)
+		zk.ready()
 	})
 
 	// CLIENT SIDE
@@ -62,25 +86,23 @@ zk.on('connected', async () => {
 		debug('All available services:')
 		debug(allServices)
 
-		const services = allServices[TEST_SERVICE_ROUTE]
+		const services = allServices[TEST_SERVICE_ROUTE_1]
 
 		if (!services) {
-			console.error(`There are no services for "${TEST_SERVICE_ROUTE}"`)
+			console.error(`There are no services for "${TEST_SERVICE_ROUTE_1}"`)
 			return
 		}
-		debug(`Available services for ${TEST_SERVICE_ROUTE}:`)
+		debug(`Available services for ${TEST_SERVICE_ROUTE_1}:`)
 		debug(services)
 
 		// get random service
-		const rndService = services[0]
+		const rndService = services[Math.floor(Math.random() * services.length)]
 
-		debug('Random service loadOptions:')
-		debug(rndService.loadOptions)
+		debug(`Random service.proto[${TEST_SERVICE_ROUTE_1}]:`)
+		const proto = rndService.routes[TEST_SERVICE_ROUTE_1]
+		debug(proto)
 
-		debug('Random service proto:')
-		debug(rndService.proto)
-
-		const buffer = await zk.getProtoFile(rndService.proto)
+		const buffer = await zk.getData(proto.znode)
 
 		zk.disconnect()
 		debug('Disconnected from ZooKeeper')

@@ -8,39 +8,55 @@ const zookeeper = require('./di').zookeeper
 const chatLoadConfig = require('../proto-repo/chat/config')
 const { chatServiceHandlers } = require('../grpc/server/service-handlers')
 
-const serviceInfo = {
+const chatService = {
+	route: '/slechtaj-1.0.0/dev~service_route/chat',
 	serviceName: chatLoadConfig.serviceName,
-	version: '1.0.0',
-	route: '/slechtaj-1.0.0/dev~service_route/test',
+	filename: chatLoadConfig.filename,
 	loadConfig: chatLoadConfig.loadOptions,
+	handlers: chatServiceHandlers,
 }
-
-const protoFiles = [chatLoadConfig.protoPath]
 
 function callee() {
 	const sc = new ServiceClient({ config, zookeeper })
 
 	try {
-		sc.on('connected', () => {
-			debug('Connected to the service router')
-			sc.registerService(serviceInfo, protoFiles, chatServiceHandlers)
+		sc.registerService(
+			chatService.route,
+			chatService.filename,
+			chatService.serviceName,
+			chatService.handlers,
+			chatService.loadConfig,
+		)
+
+		sc.on('zkReady', () => {
+			debug('Zookeeper ready')
+			// zk ready => we can start our grpc server => register services to zk
 			sc.listen()
 		})
 
-		sc.on('error', (err) => {
-			process.exitCode = 1
-			console.error(err.message)
+		sc.on('registered', () => {
+			// our services registered => we are ready to handle requests
+			debug('Services registered to zookeeper')
+			sc.connect()
+		})
 
-			sc.close() // should be done automatically?
+		sc.on('connected', () => {
+			debug('Connected to the service network')
+		})
+
+		sc.on('error', (error) => {
+			process.exitCode = 1
+			console.error(error)
 		})
 
 		sc.on('close', () => {
 			process.exit()
 		})
 
-		sc.connect()
+		sc.connectToZookeeper()
 	} catch (error) {
-		console.error(`Unexpected error: ${error.message}`)
+		console.error('Unexpected error:')
+		console.error(error)
 	}
 }
 

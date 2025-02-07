@@ -8,15 +8,15 @@ const {
 } = require('./service-handlers')
 
 const {
-	poiServiceLoader,
-	chatServiceLoader,
-	fileShareServiceLoader,
+	poiService,
+	chatService,
+	fileShareService,
 } = require('../../proto-repo')
 
 const server = new GRPCServer()
 
-server.registerService(chatServiceLoader, chatServiceHandlers)
-server.registerService(poiServiceLoader, poiServiceHandlers)
-server.registerService(fileShareServiceLoader, fileShareServiceHandlers)
+server.registerService(chatService.ServiceStub, chatServiceHandlers)
+server.registerService(poiService.ServiceStub, poiServiceHandlers)
+server.registerService(fileShareService.ServiceStub, fileShareServiceHandlers)
 
 server.listen('0.0.0.0', 50051)

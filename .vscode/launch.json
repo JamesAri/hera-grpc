@@ -7,15 +7,6 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Debug Server",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"program": "${workspaceFolder}/demo/lib/server.js"
-		},
-		{
-			"type": "node",
-			"request": "launch",
 			"name": "Debug Callee",
 			"skipFiles": [
 				"<node_internals>/**"

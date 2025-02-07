@@ -1,5 +1,5 @@
 module.exports = {
-	protoPath: __dirname + '/poi.proto',
+	filename: __dirname + '/poi.proto',
 	loadOptions: {
 		keepCase: true,
 		longs: String,
