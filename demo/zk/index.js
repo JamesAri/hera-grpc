@@ -18,11 +18,11 @@ const TEST_SERVICE_ROUTE_2 = '/slechtaj-1.0.0/dev~service_route/test/messagetype
 const TEST_FILES_1 = [
 	path.join(__dirname, 'chat.proto'),
 	// we don't need to include all paths manually, protobufjs will resolve them
-	// path.join(__dirname, 'nested/messagetype.proto'),
+	// path.join(__dirname, 'nested/message-type.proto'),
 ]
 
 const TEST_FILES_2 = [
-	path.join(__dirname, 'nested/messagetype.proto'),
+	path.join(__dirname, 'nested/message-type.proto'),
 ]
 
 zk.connect()

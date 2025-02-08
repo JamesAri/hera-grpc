@@ -1,7 +1,3 @@
-const GRPCClient = require('./lib/grpc-client')
-const GRPCServer = require('./lib/grpc-server')
+const ServiceClient = require('./lib/service-client')
 
-module.exports = {
-	GRPCServer,
-	GRPCClient,
-}
+module.exports = ServiceClient

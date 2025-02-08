@@ -7,7 +7,7 @@ public/
 npm-debug.log
 .eslintcache
 
-downloads/
+**/downloads/
 
 .vscode/*
 !.vscode/settings.json

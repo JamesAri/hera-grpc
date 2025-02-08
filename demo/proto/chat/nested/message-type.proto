@@ -1,0 +1,4 @@
+enum MessageType {
+	AUTH = 0;
+	CHAT = 1;
+}
