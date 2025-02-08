@@ -7,8 +7,9 @@ const path = require('path')
 
 // Implementation of the rpc for the service we want to call
 const ChatClient = require('./chat/client')
-const poiRun = require('./poi/client')
+const poiClient = require('./poi/client')
 const FileShareClient = require('./file-share/client')
+const jsonClient = require('./json/client')
 
 function caller() {
 	const sc = new ServiceClient({config, zookeeper})
@@ -23,34 +24,28 @@ function caller() {
 		sc.once('connected', async () => {
 			debug('Connected to the service network')
 
-			// await sc.callService('/slechtaj-1.0.0/dev~service_route/file_share', (client) => {
-			// 	const fsc = new FileShareClient(client)
-			// 	fsc.sendFile(path.join(__dirname, 'caller.js')) // share come rnd file
-			// })
+			false && await sc.callService('/slechtaj-1.0.0/dev~service_route/file_share', (client) => {
+				const fsc = new FileShareClient(client)
+				fsc.sendFile(path.join(__dirname, 'caller.js')) // share come rnd file
+			})
 
-			// await sc.callService('/slechtaj-1.0.0/dev~service_route/poi', async (client) => {
-			// 	await poiRun(client) // run all types of rpcs
-			// })
+			false && await sc.callService('/slechtaj-1.0.0/dev~service_route/poi', async (client) => {
+				await poiClient(client) // run all types of rpcs
+			})
 
-			// await sc.callService('/slechtaj-1.0.0/dev~service_route/chat', (client) => {
-			// 	const chat = new ChatClient(client) // run long-lived bidi-stream rpc
-			// 	chat.start()
-			// })
+			false && await sc.callService('/slechtaj-1.0.0/dev~service_route/chat', (client) => {
+				const chat = new ChatClient(client) // run long-lived bidi-stream rpc
+				chat.start()
+			})
 
-			await sc.callService('/slechtaj-1.0.0/dev~broker', (client) => {
-				const data = { hello: 'Request' }
-				const req = {
-					data: Buffer.from(JSON.stringify(data))
-				}
-				client.service.json(req, (error, res) => {
-					if (error) {
-						console.error('Got error:', error)
-						client.close()
-						return
-					}
-					console.log('Received response:', JSON.parse(res.data.toString('utf-8')))
-					client.close()
-				})
+			await sc.callService('/slechtaj-1.0.0/dev~broker', async (client) => {
+				const res = await jsonClient(client)
+				console.log('Received response:', res)
+			})
+
+			await sc.callService('/slechtaj-1.0.0/dev~broker', async (client) => {
+				const res = await jsonClient(client)
+				console.log('Received response:', res)
 			})
 
 			// sc.close()

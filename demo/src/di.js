@@ -1,4 +1,4 @@
-// TODO: replace with Dependency Injection
+// TODO: DI
 
 const ZooKeeper = require('../../lib/src/zookeeper')
 const config = require('./config')

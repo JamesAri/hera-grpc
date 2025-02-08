@@ -10,7 +10,10 @@
 - [ ] Better loadbalancing (?)
 - [ ] zk connect/disconnect event
 - [ ] zk register as transaction (?)
-- [ ] includeDirs with protobufjs json descriptor buffers
+- [x] includeDirs with protobufjs json descriptor buffers
+- [ ] metadata sharing - we need to maintain consistent grpc version
+- [ ] test errors - callee off, run caller; caller on->off, run caller
+
 
 
 
