@@ -11,7 +11,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/lib/multiservice/callee.js"
+			"program": "${workspaceFolder}/demo/src/callee.js"
 		},
 		{
 			"type": "node",
@@ -20,16 +20,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/demo/lib/multiservice/caller.js"
+			"program": "${workspaceFolder}/demo/src/caller.js"
 		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Debug Chat Client",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"program": "${workspaceFolder}/demo/client/chat"
-		}
 	]
 }

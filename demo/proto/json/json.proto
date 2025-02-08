@@ -1,0 +1,13 @@
+syntax="proto3";
+
+service Json {
+	rpc Json(Request) returns (Response) {}
+}
+
+message Request {
+	bytes data = 1;
+}
+
+message Response {
+	bytes data = 1;
+}

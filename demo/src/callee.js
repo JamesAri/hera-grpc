@@ -8,6 +8,7 @@ const zookeeper = require('./di').zookeeper
 const chatLoadConfig = require('../proto/chat/config')
 const poiLoadConfig = require('../proto/poi/config')
 const fileShareLoadConfig = require('../proto/file-share/config')
+const jsonLoadConfig = require('../proto/json/config')
 
 // service with long-lived bidi-stream
 const chatService = {
@@ -36,6 +37,15 @@ const fileShareService = {
 	loadOptions: fileShareLoadConfig.loadOptions,
 }
 
+// json backward compatibility demo
+const jsonService = {
+	route: '/slechtaj-1.0.0/dev~broker',
+	handlers: require('./json/handlers'),
+	serviceName: jsonLoadConfig.serviceName,
+	filename: jsonLoadConfig.filename,
+	loadOptions: jsonLoadConfig.loadOptions,
+}
+
 const registerServices = (services, sc) => {
 	for (const service of services) {
 		sc.registerService(
@@ -55,7 +65,7 @@ function callee() {
 		sc.once('zkReady', () => {
 			debug('Zookeeper ready')
 			// zk ready => register services to grpc server & zk => start grpc server
-			registerServices([chatService, poiService, fileShareService], sc)
+			registerServices([chatService, poiService, fileShareService, jsonService], sc)
 			sc.listen()
 		})
 

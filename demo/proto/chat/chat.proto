@@ -1,6 +1,6 @@
 syntax="proto3";
 
-// import "nested/message-type.proto";
+import "nested/message-type.proto";
 
 service ChatRoom {
 	// BIDIRECTIONAL STREAMING

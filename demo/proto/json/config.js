@@ -1,9 +1,6 @@
 const path = require('path')
-
 module.exports = {
-	filename: [
-		path.join(__dirname, '/chat.proto'),
-	],
+	filename: path.join(__dirname, '/json.proto'),
 	loadOptions: {
 		keepCase: true,
 		longs: String,
@@ -11,5 +8,5 @@ module.exports = {
 		defaults: true,
 		oneofs: true,
 	},
-	serviceName: 'ChatRoom',
+	serviceName: 'Json',
 }
