@@ -1,6 +1,6 @@
 const debug = require('debug')('callee')
 
-const ServiceClient = require('../../lib/service-client')
+const ServiceClient = require('@slechtaj/service-client')
 const config = require('./config')
 const zookeeper = require('./di').zookeeper
 
@@ -63,22 +63,22 @@ function callee() {
 
 	try {
 		sc.once('zkReady', () => {
-			debug('Zookeeper ready')
 			// zk ready => register services to grpc server & zk => start grpc server
+			debug('Zookeeper ready')
 			registerServices([chatService, poiService, fileShareService, jsonService], sc)
 			sc.listen()
 		})
 
 		sc.once('registered', () => {
-			debug('Services registered to zookeeper')
 			// our services registered (in zk and grpc server) and grpc
 			// server is listening => we are ready to handle requests
+			debug('Services registered to zookeeper')
 			sc.connect()
 		})
 
 		sc.once('connected', () => {
-			debug('Connected to the service network')
 			// we are connected to the service network and ready to handle/send requests
+			debug('Connected to the service network')
 		})
 
 		sc.once('error', (error) => {

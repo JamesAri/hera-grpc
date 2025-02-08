@@ -1,4 +1,4 @@
-const ServiceClient = require('../../lib/service-client')
+const ServiceClient = require('@slechtaj/service-client')
 const config = require('./config')
 const zookeeper = require('./di').zookeeper
 const debug = require('debug')('caller')

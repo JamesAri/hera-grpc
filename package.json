@@ -14,10 +14,6 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "author": {
-    "name": "Jakub Slechta",
-    "email": "jakub.slechta@emplifi.io"
-  },
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.57.0",
@@ -32,6 +28,7 @@
     "@grpc/grpc-js": "^1.10.10",
     "@grpc/proto-loader": "^0.7.13",
     "@grpc/reflection": "^1.0.4",
+    "@slechtaj/service-client": "file:lib",
     "async": "^3.2.6",
     "debug": "^4.4.0",
     "lodash": "^4.17.21",
