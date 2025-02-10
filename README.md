@@ -1,1 +1,1 @@
-GRPC learning branch: `grpc-playground`
+GRPC based protocol for efficient data transfer between microservices in a distributed system.
