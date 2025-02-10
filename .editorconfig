@@ -1,0 +1,29 @@
+root=true
+
+[*]
+indent_style = tab
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+
+[package.json]
+insert_final_newline = false
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+[*.yml]
+insert_final_newline = false
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[.maratonecrc]
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[{.gitlab-ci.yml}]
+indent_style = space
+indent_size = 2

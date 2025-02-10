@@ -1,0 +1,5 @@
+coverage/
+pages/
+public/
+!.eslintrc.js
+!.prettierrc.js
