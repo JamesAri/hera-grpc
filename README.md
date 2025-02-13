@@ -1,10 +1,18 @@
 ## Introduction
 
-GRPC based protocol for efficient data transfer between microservices in a distributed system **without the need of a centralized repository for protocol buffer (gRPC IDL) files**.
+GRPC based library for efficient data transfer between microservices in a distributed system **without the need of a centralized repository for protocol buffer files (gRPC IDL)**.
 
 Current solutions for sharing proto files are mostly centralized repositories (e.g. [google](https://github.com/googleapis/googleapis/tree/master/google)) that do not support dynamic development - by that I mean spawning a grpc service and being able to call it immediately without any more work.
 
 This library leverages the ability of Node.js gRPC support for [dynamically generating the code at runtime](https://grpc.io/docs/languages/node/basics/#example-code-and-setup). When a new service wants to register its services, it provides a proto definition along with a `route` for which the service will be registered. The proto file is then registered to a zookeeper ready to be served to clients who call the service for the specific registered `route`.
+
+---
+
+This library should not restrict the users on how to define the services via the protocol buffers. To access the [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js) utilities like `grpc.Metadata` or `grpc.status` you should import the reexported `grpc` package like this:
+
+```js
+const { grpc } = require('todo-package')
+```
 
 ## Usage
 
@@ -75,7 +83,7 @@ sc.connect()
 
 ## Development
 
-Before developing I highly encourage to read these:
+Before developing (for this project) I highly encourage to read these:
 
 **General understanding of distributed system lifecycle using gRPC:**
 
