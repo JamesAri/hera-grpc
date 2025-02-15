@@ -106,6 +106,12 @@ Before developing (for this project) I highly encourage to read these:
 
 - [GitHub examples](https://github.com/grpc/grpc-node/tree/master/examples)
 
+**gRPC Node.js tests - advanced use cases and undocumented functionality**
+
+For example the API specification tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).
+
+- [gRPC Node.js Tests](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js/test)
+
 ## Current zk structure
 
 `get /hera-test/services/<znode>`:
@@ -152,6 +158,9 @@ Before developing (for this project) I highly encourage to read these:
 ```
 
 `get /hera-test/proto/<znode>`: (json descriptor, see [protobufjs](https://www.npmjs.com/package/protobufjs))
+
+*note: corresponds to the `ChatRoom` service above.*
+
 ```json
 {
   "options": { "syntax": "proto3" },
