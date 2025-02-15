@@ -85,9 +85,15 @@ sc.connect()
 
 Before developing (for this project) I highly encourage to read these:
 
-**General understanding of distributed system lifecycle using gRPC:**
+**General understanding of gRPC:**
 
-- [Task-oriented walkthroughs of common grpc use cases](https://grpc.io/docs/guides/)
+- [Introduction](https://grpc.io/docs/what-is-grpc/introduction/)
+
+- [Core concepts, architecture and lifecycle](https://grpc.io/docs/what-is-grpc/core-concepts/)
+
+- [FAQ](https://grpc.io/docs/what-is-grpc/faq/)
+
+- [Guides](https://grpc.io/docs/guides/) - probably the most important one
 
 **gRPC Node.js Interceptors:**
 
