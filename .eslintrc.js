@@ -41,6 +41,5 @@ module.exports = {
 				alphabetize: { order: 'asc', caseInsensitive: true },
 			},
 		],
-		'newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
 	},
 }
