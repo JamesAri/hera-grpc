@@ -1,19 +1,14 @@
 ### TODOs
 
-- [ ] specific error for `Error: No service available for route ...`
+- [ ] Better loadbalancing (?)
+- [ ] zk register as transaction (?)
 - [ ] create default proto for JSON like objects
 - [ ] handle if `sc.callService` called multiple times without await
 - [ ] Dependency Injection
-- [ ] Make (debug) logs better
-- [ ] Handle when we choose closing client from zk (?)
-- [ ] Reuse loaded client for different routes
-- [ ] Better loadbalancing (?)
 - [ ] zk connect/disconnect event
-- [ ] zk register as transaction (?)
+- [x] Make (debug) logs better
+- [x] metadata sharing - we need to maintain consistent grpc version
+- [x] test errors - callee off, run caller; caller on->off, run caller
 - [x] includeDirs with protobufjs json descriptor buffers
-- [ ] metadata sharing - we need to maintain consistent grpc version
-- [ ] test errors - callee off, run caller; caller on->off, run caller
 
 
-
-If any interceptors are passed at invocation, all interceptors attached to the call during construction are ignored.
