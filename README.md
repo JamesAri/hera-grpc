@@ -85,7 +85,7 @@ sc.connect()
 
 Before developing (for this project) I highly encourage to read these:
 
-**General understanding of gRPC:**
+### General understanding of gRPC:
 
 - [Introduction](https://grpc.io/docs/what-is-grpc/introduction/)
 
@@ -95,7 +95,17 @@ Before developing (for this project) I highly encourage to read these:
 
 - [Guides](https://grpc.io/docs/guides/) - probably the most important one
 
-**gRPC Node.js Interceptors:**
+### Advanced understanding of gRPC:
+
+- [Docs](https://github.com/grpc/grpc/tree/master/doc)
+
+More specifically:
+
+- [Docs - Service Config](https://github.com/grpc/grpc/blob/master/doc/service_config.md)
+- [Docs - Naming (DNS)](https://github.com/grpc/grpc/blob/master/doc/naming.md)
+- [Docs - Load Balancing](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
+
+### Node.js gRPC Interceptors:
 
 *Interceptors are used for various tasks, such as authentication, tracing, caching or logging.*
 
@@ -103,16 +113,15 @@ Before developing (for this project) I highly encourage to read these:
 
 - [L112 gRFC proposal on NodeJS Server Interceptors](https://github.com/grpc/proposal/blob/master/L112-node-server-interceptors.md)
 
-
-**gRPC Node.js API reference:**
+### Node.js gRPC API reference:
 
 - [Node gRPC API reference](https://grpc.github.io/grpc/node/grpc.html)
 
-**Examples of gRPC in Node.js**
+### Examples of gRPC in Node.js
 
 - [GitHub examples](https://github.com/grpc/grpc-node/tree/master/examples)
 
-**gRPC Node.js tests - advanced use cases and undocumented functionality**
+### Node.js gRPC tests - advanced use cases and undocumented functionality
 
 For example the API specification tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).
 
