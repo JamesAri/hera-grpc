@@ -8,7 +8,7 @@ This library leverages the ability of Node.js gRPC support for [dynamically gene
 
 ---
 
-This library should not restrict the users on how to define the services via the protocol buffers. To access the [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js) utilities like `grpc.Metadata` or `grpc.status` you should import the reexported `grpc` package like this:
+This library should not restrict the users on how to define the services via the protocol buffers. To access the [@grpc/grpc-js](https://www.npmjs.com/package/@grpc/grpc-js) utilities like `grpc.Metadata` or `grpc.status` you should import the reexported `grpc` package:
 
 ```js
 const { grpc } = require('todo-package')
@@ -101,9 +101,12 @@ Before developing (for this project) I highly encourage to read these:
 
 More specifically:
 
-- [Docs - Service Config](https://github.com/grpc/grpc/blob/master/doc/service_config.md)
-- [Docs - Naming (DNS)](https://github.com/grpc/grpc/blob/master/doc/naming.md)
+- [Docs - Service Config](https://github.com/grpc/grpc/blob/master/doc/service_config.md) - e.g. setting Load Balancing strategy
+	- [Service Config IDL](https://github.com/grpc/grpc-proto/blob/master/grpc/service_config/service_config.proto)
+- [Docs - Name Resolution](https://github.com/grpc/grpc/blob/master/doc/naming.md)
 - [Docs - Load Balancing](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
+
+---
 
 ### Node.js gRPC Interceptors:
 
@@ -113,19 +116,23 @@ More specifically:
 
 - [L112 gRFC proposal on NodeJS Server Interceptors](https://github.com/grpc/proposal/blob/master/L112-node-server-interceptors.md)
 
-### Node.js gRPC API reference:
+### Node.js gRPC API Reference:
 
 - [Node gRPC API reference](https://grpc.github.io/grpc/node/grpc.html)
 
-### Examples of gRPC in Node.js
+### Node.js gRPC Examples
 
 - [GitHub examples](https://github.com/grpc/grpc-node/tree/master/examples)
 
-### Node.js gRPC tests - advanced use cases and undocumented functionality
+### Node.js gRPC Tests - advanced use cases and undocumented functionality
 
-For example the API specification tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).
+*For example the API specification tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).*
 
 - [gRPC Node.js Tests](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js/test)
+
+### Node.js gRPC List of Supported Channel Options
+
+[Supported Channel Options](https://github.com/grpc/grpc-node/blob/master/packages/grpc-js/README.md#supported-channel-options)
 
 ## Current zk structure
 
