@@ -142,44 +142,26 @@ More specifically:
 
 *Zookeeper is used here as a service discovery. The current watch fetches all services to the distributed nodes on each change - if it turns out that the zookeeper service is overwhelmed, we will need to come with a different solution.*
 
-`get /hera-test/services/<znode>`:
+`get /hera-test/services/<znode>`: (service definition)
 ```json
 {
-	"host": "localhost",
-	"port": 50054,
+	"host": "127.0.0.1",
+	"port": 53362,
 	"routes": {
 		"/slechtaj-1.0.0/dev~service_route/chat": {
 			"serviceName": "ChatRoom",
-			"znode": "/proto/buffer0000000558",
-			"loadOptions": {
-				"keepCase": true,
-				"longs": "String",
-				"enums": "String",
-				"defaults": true,
-				"oneofs": true
-			}
+			"protoZnode": "/proto/buffer0000001575",
+			"loadOptions": { "keepCase": true, "longs": "String", "enums": "String", "defaults": true, "oneofs": true }
 		},
 		"/slechtaj-1.0.0/dev~service_route/poi": {
 			"serviceName": "RouteGuide",
-			"znode": "/proto/buffer0000000559",
-			"loadOptions": {
-				"keepCase": true,
-				"longs": "String",
-				"enums": "String",
-				"defaults": true,
-				"oneofs": true
-			}
+			"protoZnode": "/proto/buffer0000001576",
+			"loadOptions": { "keepCase": true, "longs": "String", "enums": "String", "defaults": true, "oneofs": true }
 		},
 		"/slechtaj-1.0.0/dev~service_route/file_share": {
 			"serviceName": "FileShare",
-			"znode": "/proto/buffer0000000560",
-			"loadOptions": {
-				"keepCase": true,
-				"longs": "String",
-				"enums": "String",
-				"defaults": true,
-				"oneofs": true
-			}
+			"protoZnode": "/proto/buffer0000001577",
+			"loadOptions": { "keepCase": true, "longs": "String", "enums": "String", "defaults": true, "oneofs": true }
 		}
 	}
 }
