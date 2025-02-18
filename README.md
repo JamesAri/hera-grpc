@@ -87,6 +87,8 @@ sc.connect()
 
 Before developing (for this project) I highly encourage to read these:
 
+---
+
 #### General understanding of gRPC:
 
 - [Introduction](https://grpc.io/docs/what-is-grpc/introduction/)
@@ -97,16 +99,40 @@ Before developing (for this project) I highly encourage to read these:
 
 - [Guides](https://grpc.io/docs/guides/) - probably the most important one
 
+---
+
 #### Advanced understanding of gRPC:
 
 - [Docs](https://github.com/grpc/grpc/tree/master/doc)
 
 More specifically:
 
-- [Docs - Service Config](https://github.com/grpc/grpc/blob/master/doc/service_config.md) - e.g. setting Load Balancing strategy
+- [Docs - Service Config](https://github.com/grpc/grpc/blob/master/doc/service_config.md) - e.g. setting LB strategy, retry/hedging polices, ...
 	- [Service Config IDL](https://github.com/grpc/grpc-proto/blob/master/grpc/service_config/service_config.proto)
 - [Docs - Name Resolution](https://github.com/grpc/grpc/blob/master/doc/naming.md)
 - [Docs - Load Balancing](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)
+
+---
+
+#### Repository [@grpc-js](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js)
+
+- [gRPC Node.js Tests](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js/test) - advanced use cases and undocumented functionality
+
+	*For example the API reference tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).*
+
+---
+
+#### Node.js gRPC API Reference:
+
+- [Node gRPC API reference](https://grpc.github.io/grpc/node/grpc.html)
+
+---
+
+#### Node.js gRPC Examples:
+
+- [Examples](https://github.com/grpc/grpc-node/tree/master/examples)
+
+---
 
 #### Node.js gRPC Interceptors:
 
@@ -116,27 +142,25 @@ More specifically:
 
 - [L112 gRFC proposal on NodeJS Server Interceptors](https://github.com/grpc/proposal/blob/master/L112-node-server-interceptors.md)
 
-#### Node.js gRPC API Reference:
-
-- [Node gRPC API reference](https://grpc.github.io/grpc/node/grpc.html)
-
-#### Node.js gRPC Examples
-
-- [GitHub examples](https://github.com/grpc/grpc-node/tree/master/examples)
-
-#### Node.js gRPC Tests - advanced use cases and undocumented functionality
-
-*For example the API specification tells us that [`parent` call option](https://grpc.github.io/grpc/node/grpc.Client.html#:~:text=construct%20the%20client.-,parent,-grpc.Client~Call) should be a `grpc.Client~Call`, but it is in fact a [server call](https://github.com/grpc/grpc-node/blob/613c832aad5bc76005b809f45413e2c1c0222c20/packages/grpc-js/test/test-call-propagation.ts#L99C11-L99C50).*
-
-- [gRPC Node.js Tests](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js/test)
+---
 
 #### Node.js gRPC List of Supported Channel Options
 
 - [Supported Channel Options](https://github.com/grpc/grpc-node/blob/master/packages/grpc-js/README.md#supported-channel-options)
 
+---
+
+#### Node.js gRPC Environment Variables
+
+- [Environment Variables](https://github.com/grpc/grpc-node/blob/master/doc/environment_variables.md)
+
+---
+
 ### Debugging
 
 `GRPC_TRACE=all GRPC_VERBOSITY=DEBUG DEBUG=* node ...`
+
+- [Environment Variables](https://github.com/grpc/grpc-node/blob/master/doc/environment_variables.md)
 
 ## Current zk structure
 
