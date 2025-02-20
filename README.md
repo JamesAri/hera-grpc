@@ -147,6 +147,7 @@ More specifically:
 #### Node.js gRPC List of Supported Channel Options
 
 - [Supported Channel Options](https://github.com/grpc/grpc-node/blob/master/packages/grpc-js/README.md#supported-channel-options)
+- [Document with channel argument keys definition](https://grpc.github.io/grpc/core/group__grpc__arg__keys.html)
 
 ---
 
