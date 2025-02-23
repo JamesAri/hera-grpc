@@ -11,5 +11,5 @@ message JsonResponse {
 }
 
 service JsonService {
-	rpc JsonRpc(hera.internal.v1.JsonRequest) returns (hera.internal.v1.JsonResponse) {}
+	rpc JsonRpc(JsonRequest) returns (JsonResponse) {}
 }
