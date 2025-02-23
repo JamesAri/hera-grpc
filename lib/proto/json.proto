@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package hera.internal.v1;
+
+message JsonRequest {
+	bytes data = 1;
+}
+
+message JsonResponse {
+	bytes data = 1;
+}
+
+service JsonService {
+	rpc JsonRpc(hera.internal.v1.JsonRequest) returns (hera.internal.v1.JsonResponse) {}
+}
