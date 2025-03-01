@@ -4,7 +4,7 @@ GRPC based library for efficient data transfer between microservices in a distri
 
 Current solutions for sharing proto files are mostly centralized repositories (e.g. [google](https://github.com/googleapis/googleapis/tree/master/google)) that do not support dynamic development - by that I mean spawning a grpc service and being able to call it immediately without any more work.
 
-This library leverages the ability of Node.js gRPC support for [dynamically generating the code at runtime](https://grpc.io/docs/languages/node/basics/#example-code-and-setup). When a new service wants to register its services, it provides a proto definition along with a `route` for which the service will be registered. The proto file is then registered to a zookeeper ready to be served to clients who call the service for the specific registered `route`.
+This library leverages the ability of Node.js gRPC support for [dynamically generating the code at runtime](https://grpc.io/docs/languages/node/basics/#example-code-and-setup). When a new service wants to register its services, it provides a proto definition along with a `route` for which the service will be registered. The proto file is then registered to a zookeeper and ready to be served to clients who call the service for the specific registered `route`.
 
 ---
 
