@@ -8,7 +8,7 @@ const grpc = require('@grpc/grpc-js')
 const ServiceClient = require('./lib/client')
 const compression = require('./lib/const/compression')
 const logLevels = require('./lib/const/log-levels')
-const rpcWhitelist = require('./lib/const/rpc-no-auth')
+const rpcNoAuth = require('./lib/const/rpc-no-auth')
 const internal = require('./lib/proto/internal-services')
 
 module.exports = {
@@ -17,5 +17,5 @@ module.exports = {
 	grpc,
 	compression,
 	logLevels,
-	rpcWhitelist,
+	rpcNoAuth,
 }
