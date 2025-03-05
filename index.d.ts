@@ -13,6 +13,8 @@ declare namespace ServiceClient {
 
 declare class ServiceClient extends EventEmitter {
 	public constructor(props: ServiceClient.ServiceClientOptions)
+
+	public getStub(serviceName: string, clientOptions?: grpc.ClientOptions): any
 }
 
 type ServiceDefinition = {
