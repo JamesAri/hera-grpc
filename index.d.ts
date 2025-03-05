@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import grpc from '@grpc/grpc-js'
+import protoLoader from '@grpc/proto-loader'
 
 declare namespace ServiceClient {
 	export interface ServiceClientOptions {
@@ -9,12 +10,28 @@ declare namespace ServiceClient {
 		serverOptions: grpc.ServerOptions
 		logLevel: keyof typeof logLevels
 	}
+
+	export type ServiceDefinition = {
+		routes: string | string[]
+		serviceName: grpc.ServiceDefinition<any>
+		handlers: grpc.UntypedServiceImplementation
+		filename?: string
+		loadOptions?: protoLoader.Options
+	}
 }
 
 declare class ServiceClient extends EventEmitter {
 	public constructor(props: ServiceClient.ServiceClientOptions)
 
-	public getStub(serviceName: string, clientOptions?: grpc.ClientOptions): any
+	public connect(): Promise<void>
+	public close(): Promise<void>
+	public getStub(serviceName: string, clientOptions?: grpc.ClientOptions): Promise<grpc.Client>
+
+	public on(event: 'close', listener: () => void): this
+	public on(event: 'connected', listener: () => void): this
+	public on(event: 'registered', listener: (boundPort: Number) => void): this
+
+	public registerService(serviceDefinition: ServiceClient.ServiceDefinition): void
 }
 
 type ServiceDefinition = {
