@@ -56,8 +56,7 @@ class Logger {
 		}
 	}
 
-	/** sometimes known as INFO */
-	log(message) {
+	info(message) {
 		this.logger.emit({
 			severityNumber: SeverityNumber.INFO,
 			severityText: 'INFO',
@@ -68,7 +67,7 @@ class Logger {
 		})
 
 		if (Logger.level <= logLevels.INFO) {
-			console.log(this.formatMessage(message))
+			console.info(this.formatMessage(message))
 		}
 	}
 
