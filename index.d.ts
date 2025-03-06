@@ -30,6 +30,9 @@ declare class ServiceClient extends EventEmitter {
 	public on(event: 'close', listener: () => void): this
 	public on(event: 'connected', listener: () => void): this
 	public on(event: 'registered', listener: (boundPort: Number) => void): this
+	public once(event: 'close', listener: () => void): this
+	public once(event: 'connected', listener: () => void): this
+	public once(event: 'registered', listener: (boundPort: Number) => void): this
 
 	public registerService(serviceDefinition: ServiceClient.ServiceDefinition): void
 }
