@@ -4,8 +4,6 @@ import protoLoader from '@grpc/proto-loader'
 
 declare namespace ServiceClient {
 	export interface ServiceClientOptions {
-		host: string
-		port: number
 		zk: string
 		serverOptions: grpc.ServerOptions
 		logLevel: keyof typeof logLevels
