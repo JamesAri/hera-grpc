@@ -5,6 +5,7 @@ import protoLoader from '@grpc/proto-loader'
 declare namespace ServiceClient {
 	export interface ServiceClientOptions {
 		zk: string
+		port: number
 		serverOptions: grpc.ServerOptions
 		logLevel: keyof typeof logLevels
 	}
@@ -19,7 +20,7 @@ declare namespace ServiceClient {
 }
 
 declare class ServiceClient extends EventEmitter {
-	public constructor(props: ServiceClient.ServiceClientOptions)
+	public constructor(options: ServiceClient.ServiceClientOptions)
 
 	public connect(): Promise<void>
 	public close(): Promise<void>
