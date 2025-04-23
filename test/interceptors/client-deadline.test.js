@@ -1,14 +1,25 @@
 const assert = require('assert')
 
 const grpc = require('@grpc/grpc-js')
+const sinon = require('sinon')
 
 const ClientDeadlineInterceptor = require('../../lib/interceptors/client-deadline')
 
 describe('ClientDeadlineInterceptor', () => {
-	let interceptor = null
+	let interceptor = /** @type {import('../../lib/interceptors/client-deadline')} */ (null)
 
 	beforeEach(() => {
 		interceptor = new ClientDeadlineInterceptor()
+	})
+
+	it('sould set options', () => {
+		sinon.stub(interceptor, 'addDefaultDeadline').returns()
+		const nextCall = () => {}
+		const options = { testKey: 'testValue' }
+		interceptor.interceptor(options, nextCall)
+		assert.ok(interceptor.options)
+		assert.strictEqual(interceptor.options.testKey, options.testKey)
+		sinon.restore()
 	})
 
 	it('should set default deadline', () => {

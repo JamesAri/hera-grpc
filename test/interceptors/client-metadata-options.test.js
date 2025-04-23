@@ -5,10 +5,18 @@ const grpc = require('@grpc/grpc-js')
 const ClientMetadataOptionsInterceptor = require('../../lib/interceptors/client-metadata-options')
 
 describe('ClientMetadataOptionsInterceptor', () => {
-	let interceptor = null
+	let interceptor = /** @type {import('../../lib/interceptors/client-metadata-options')} */ (null)
 
 	beforeEach(() => {
 		interceptor = new ClientMetadataOptionsInterceptor()
+	})
+
+	it('sould set options', () => {
+		const nextCall = () => {}
+		const options = { testKey: 'testValue' }
+		interceptor.interceptor(options, nextCall)
+		assert.ok(interceptor.options)
+		assert.strictEqual(interceptor.options.testKey, options.testKey)
 	})
 
 	it('should set default waitForReady metadata option', () => {
