@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package test.services.package;
+
+import "test-message.proto";
+
+service TestService {
+	rpc TestRpc(stream test.messages.package.TestMessage) returns (stream test.messages.package.TestMessage) {}
+}
