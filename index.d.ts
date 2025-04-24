@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
-import grpc from '@grpc/grpc-js'
-import protoLoader from '@grpc/proto-loader'
+import * as grpc from '@grpc/grpc-js'
+import * as protoLoader from '@grpc/proto-loader'
 
 declare namespace ServiceClient {
 	export interface ServiceClientOptions {
@@ -41,7 +41,7 @@ type ServiceDefinition = {
 		filename: string
 	}
 }
-export declare const internal: ServiceDefinition
+declare const internal: ServiceDefinition
 
 declare namespace compression {
 	namespace ALGORITHMS {
@@ -58,7 +58,7 @@ declare namespace compression {
 }
 
 declare namespace logLevels {
-	const ALL: numbre
+	const ALL: number
 	const DEBUG: number
 	const INFO: number
 	const WARN: number
