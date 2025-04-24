@@ -1,4 +1,4 @@
-if (process.env.EXPERIMENTAL_OTEL && process.env.ENVIRONMENT !== 'testing') {
+if (process.env?.EXPERIMENTAL_OTEL) {
 	require('./experimental/instrumentation')
 }
 
