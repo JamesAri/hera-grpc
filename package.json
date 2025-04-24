@@ -5,11 +5,11 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "NODE_ENV=testing nyc mocha --timeout=10000 \"test/**/*.test.js\"",
     "test:integration": "NODE_ENV=testing nyc mocha --timeout=10000 \"test/integration/**/*.test.js\"",
     "test:unit": "NODE_ENV=testing nyc mocha \"test/unit/**/*.test.js\"",
-    "lint": "eslint . --ext .js,.ts, --cache",
-    "coverage": "NODE_ENV=testing npm test && nyc report --reporter=html"
+    "lint": "eslint . --ext .js,.ts, --cache --ignore-pattern '**/*.d.ts'",
+    "coverage": "NODE_ENV=testing nyc --reporter=html mocha --timeout=10000 \"test/**/*.test.js\""
   },
   "author": {
     "name": "Jakub Slechta",

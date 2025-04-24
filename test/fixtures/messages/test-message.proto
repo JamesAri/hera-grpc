@@ -3,5 +3,5 @@ syntax="proto3";
 package test.messages.package;
 
 message TestMessage {
-	string test_field = 1;
+	string message = 1;
 }
