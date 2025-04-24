@@ -3,7 +3,7 @@ const assert = require('assert')
 const grpc = require('@grpc/grpc-js')
 const sinon = require('sinon')
 
-const ClientParentInterceptor = require('../../lib/interceptors/client-parent')
+const ClientParentInterceptor = require('../../../lib/interceptors/client-parent')
 
 describe('ClientParentInterceptor', () => {
 	const PARENT_CALL = { someKey: 'someValue' }

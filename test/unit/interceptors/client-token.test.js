@@ -3,7 +3,7 @@ const assert = require('assert')
 const grpc = require('@grpc/grpc-js')
 const sinon = require('sinon')
 
-const ClientTokenInterceptor = require('../../lib/interceptors/client-token')
+const ClientTokenInterceptor = require('../../../lib/interceptors/client-token')
 
 describe('ClientTokenInterceptor', () => {
 	let interceptor = /** @type {import('../../lib/interceptors/client-token')} */ (null)

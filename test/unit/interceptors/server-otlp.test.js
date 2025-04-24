@@ -1,9 +1,9 @@
 const assert = require('assert')
 
-const sinon = require('sinon')
 const grpc = require('@grpc/grpc-js')
+const sinon = require('sinon')
 
-const ServerOTLPInterceptor = require('../../lib/interceptors/server-otlp')
+const ServerOTLPInterceptor = require('../../../lib/interceptors/server-otlp')
 
 describe('ServerOTLPInterceptor', () => {
 	let interceptor = /** @type {import('../../lib/interceptors/server-otlp')} */ (null)

@@ -2,7 +2,7 @@ const assert = require('assert')
 
 const grpc = require('@grpc/grpc-js')
 
-const ClientMetadataOptionsInterceptor = require('../../lib/interceptors/client-metadata-options')
+const ClientMetadataOptionsInterceptor = require('../../../lib/interceptors/client-metadata-options')
 
 describe('ClientMetadataOptionsInterceptor', () => {
 	let interceptor = /** @type {import('../../lib/interceptors/client-metadata-options')} */ (null)

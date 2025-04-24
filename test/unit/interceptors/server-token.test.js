@@ -3,8 +3,8 @@ const assert = require('assert')
 const grpc = require('@grpc/grpc-js')
 const sinon = require('sinon')
 
-const RPC_WHITE_LIST = require('../../lib/const/rpc-no-auth')
-const ServerTokenInterceptor = require('../../lib/interceptors/server-token')
+const RPC_WHITE_LIST = require('../../../lib/const/rpc-no-auth')
+const ServerTokenInterceptor = require('../../../lib/interceptors/server-token')
 
 describe('ServerTokenInterceptor', () => {
 	let interceptor = /** @type {import('../../lib/interceptors/server-token')} */ (null)

@@ -16,9 +16,8 @@ const {
 	getPublicInterface,
 	retry,
 	shuffle,
-} = require('../lib/utils')
-
-const PROTO_CONFIG = require('./fixtures/proto-test-config')
+} = require('../../lib/utils')
+const PROTO_CONFIG = require('../fixtures/proto-test-config')
 
 describe('utils tests', () => {
 	const { filename, loadOptions, serviceName, messageName } = PROTO_CONFIG

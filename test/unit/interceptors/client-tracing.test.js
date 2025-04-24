@@ -3,11 +3,11 @@ const assert = require('assert')
 const grpc = require('@grpc/grpc-js')
 const sinon = require('sinon')
 
-const ClientTracingInterceptor = require('../../lib/interceptors/client-tracing')
+const ClientTracingInterceptor = require('../../../lib/interceptors/client-tracing')
 
 describe('ClientTracingInterceptor', () => {
 	const ROUTE = 'GET 1234/test/route'
-	let interceptor = /** @type {import('../../lib/interceptors/client-tracing')} */ (null)
+	let interceptor = /** @type {import('../../../lib/interceptors/client-tracing')} */ (null)
 
 	beforeEach(() => {
 		interceptor = new ClientTracingInterceptor(ROUTE)

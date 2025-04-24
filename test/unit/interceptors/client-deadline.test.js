@@ -3,7 +3,7 @@ const assert = require('assert')
 const grpc = require('@grpc/grpc-js')
 const sinon = require('sinon')
 
-const ClientDeadlineInterceptor = require('../../lib/interceptors/client-deadline')
+const ClientDeadlineInterceptor = require('../../../lib/interceptors/client-deadline')
 
 describe('ClientDeadlineInterceptor', () => {
 	let interceptor = /** @type {import('../../lib/interceptors/client-deadline')} */ (null)
