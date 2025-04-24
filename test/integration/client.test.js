@@ -1,15 +1,26 @@
+require('dotenv').config()
+
 const assert = require('assert')
 
 const { ServiceClient } = require('../..')
 
-describe('Core ServiceClient integration tests', () => {
-	it('can connect', (done) => {
-		const client = new ServiceClient({
-			zk: process.env.ZK_HERA,
-		})
+const GRPC_PORT = process.env.HERA_PORT || 50051
 
-		client.on('connected', () => {
-			done()
+describe('Core ServiceClient integration tests', () => {
+	let client = /** @type {import('../..').ServiceClient} */ (null)
+
+	before(() => {
+		client = new ServiceClient({
+			zk: process.env.ZK_HERA,
+			port: GRPC_PORT,
 		})
+	})
+
+	after(async () => {
+		await client.close()
+	})
+
+	it('can connect', async () => {
+		await client.connect()
 	})
 })
