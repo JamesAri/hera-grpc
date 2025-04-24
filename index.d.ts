@@ -12,7 +12,7 @@ declare namespace ServiceClient {
 
 	export type ServiceDefinition = {
 		routes: string | string[]
-		serviceName: grpc.ServiceDefinition<any>
+		serviceName: grpc.ServiceDefinition
 		handlers: grpc.UntypedServiceImplementation
 		filename?: string
 		loadOptions?: protoLoader.Options
@@ -24,7 +24,7 @@ declare class ServiceClient extends EventEmitter {
 
 	public connect(): Promise<void>
 	public close(): Promise<void>
-	public getStub(serviceName: string, clientOptions?: grpc.ClientOptions): Promise<grpc.Client>
+	public getStub(route: string, clientOptions?: grpc.ClientOptions): Promise<grpc.Client>
 
 	public on(event: 'close', listener: () => void): this
 	public on(event: 'connected', listener: () => void): this
