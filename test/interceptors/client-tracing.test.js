@@ -7,7 +7,7 @@ const ClientTracingInterceptor = require('../../lib/interceptors/client-tracing'
 
 describe('ClientTracingInterceptor', () => {
 	const ROUTE = 'GET 1234/test/route'
-	let interceptor = /** @type {import('../../lib/interceptors/client-deadline')} */ (null)
+	let interceptor = /** @type {import('../../lib/interceptors/client-tracing')} */ (null)
 
 	beforeEach(() => {
 		interceptor = new ClientTracingInterceptor(ROUTE)

@@ -5,8 +5,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "nyc mocha \"test/**/*.test.js\"",
-    "coverage": "npm test && nyc report --reporter=html"
+    "test": "NODE_ENV=testing nyc mocha \"test/**/*.test.js\"",
+    "coverage": "NODE_ENV=testing npm test && nyc report --reporter=html"
   },
   "author": {
     "name": "Jakub Slechta",

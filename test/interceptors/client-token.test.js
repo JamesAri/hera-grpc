@@ -6,7 +6,7 @@ const sinon = require('sinon')
 const ClientTokenInterceptor = require('../../lib/interceptors/client-token')
 
 describe('ClientTokenInterceptor', () => {
-	let interceptor = /** @type {import('../../lib/interceptors/client-deadline')} */ (null)
+	let interceptor = /** @type {import('../../lib/interceptors/client-token')} */ (null)
 
 	beforeEach(() => {
 		interceptor = new ClientTokenInterceptor()
