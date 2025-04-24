@@ -10,15 +10,16 @@ describe('ClientDeadlineInterceptor', () => {
 
 	beforeEach(() => {
 		interceptor = new ClientDeadlineInterceptor()
+		interceptor.options = {}
 	})
 
-	it('sould set options', () => {
-		sinon.stub(interceptor, 'addDefaultDeadline').returns()
+	it('interceptor setups correctly', () => {
+		const addDefaultDeadlineStub = sinon.stub(interceptor, 'addDefaultDeadline').returns()
 		const nextCall = () => {}
 		const options = { testKey: 'testValue' }
 		interceptor.interceptor(options, nextCall)
-		assert.ok(interceptor.options)
 		assert.strictEqual(interceptor.options.testKey, options.testKey)
+		assert.ok(addDefaultDeadlineStub.calledOnce)
 		sinon.restore()
 	})
 

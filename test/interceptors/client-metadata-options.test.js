@@ -9,14 +9,15 @@ describe('ClientMetadataOptionsInterceptor', () => {
 
 	beforeEach(() => {
 		interceptor = new ClientMetadataOptionsInterceptor()
+		interceptor.options = {}
 	})
 
-	it('sould set options', () => {
+	it('interceptor setups correctly', () => {
 		const nextCall = () => {}
 		const options = { testKey: 'testValue' }
 		interceptor.interceptor(options, nextCall)
-		assert.ok(interceptor.options)
-		assert.strictEqual(interceptor.options.testKey, options.testKey)
+		assert.strictEqual(interceptor.options, options)
+		assert.strictEqual(interceptor.nextCall, nextCall)
 	})
 
 	it('should set default waitForReady metadata option', () => {

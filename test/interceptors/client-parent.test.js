@@ -12,15 +12,17 @@ describe('ClientParentInterceptor', () => {
 
 	beforeEach(() => {
 		interceptor = new ClientParentInterceptor(PARENT_CALL)
+		interceptor.options = {}
 	})
 
-	it('sould set options', () => {
-		sinon.stub(interceptor, 'addParentCall').returns()
+	it('interceptor setups correctly', () => {
+		const addParentCallStub = sinon.stub(interceptor, 'addParentCall').returns()
 		const nextCall = () => {}
 		const options = { testKey: 'testValue' }
 		interceptor.interceptor(options, nextCall)
-		assert.ok(interceptor.options)
-		assert.strictEqual(interceptor.options.testKey, options.testKey)
+		assert.strictEqual(interceptor.options, options)
+		assert.strictEqual(interceptor.nextCall, nextCall)
+		assert.ok(addParentCallStub.calledOnce)
 		sinon.restore()
 	})
 
