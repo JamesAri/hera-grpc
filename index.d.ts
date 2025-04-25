@@ -8,6 +8,8 @@ declare namespace ServiceClient {
 		port: number
 		serverOptions: grpc.ServerOptions
 		logLevel: keyof typeof logLevels
+		retryMaxAttempts: number
+		retryDelay: number
 	}
 
 	export type ServiceDefinition = {
@@ -39,6 +41,7 @@ declare class ServiceClient extends EventEmitter {
 type ServiceDefinition = {
 	[serviceName: string]: {
 		filename: string
+		loadOptions?: protoLoader.Options
 	}
 }
 declare const internal: ServiceDefinition
