@@ -1,7 +1,7 @@
 {
   "name": "hera-grpc",
   "description": "Hera-GRPC is a library built around Node.js gRPC (@grpc/grpc-js) for efficient data transfer in a distributed system without the need of a centralized repository for protocol buffer files (gRPC IDL).",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
