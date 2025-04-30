@@ -24,9 +24,25 @@ declare namespace ServiceClient {
 declare class ServiceClient extends EventEmitter {
 	public constructor(options: ServiceClient.ServiceClientOptions)
 
+	/**
+	 * Connects the client to the network and starts the registered services if any.
+	*/
 	public connect(): Promise<void>
+	/**
+	 * Disconnects the client from the network and stops all services.
+	 */
 	public close(): Promise<void>
+	/**
+	 * Creates the gRPC stub for the given route.
+	 * @param route to get the stub for
+	 * @param clientOptions as in gRPC
+	 */
 	public getStub(route: string, clientOptions?: grpc.ClientOptions): Promise<grpc.Client>
+	/**
+	 * Registers a service to the gRPC server which will be started when the client connects.
+	 * @param serviceDefinition - the service definition to register.
+	 */
+	public registerService(serviceDefinition: ServiceClient.ServiceDefinition): void
 
 	public on(event: 'close', listener: () => void): this
 	public on(event: 'connected', listener: () => void): this
@@ -35,7 +51,6 @@ declare class ServiceClient extends EventEmitter {
 	public once(event: 'connected', listener: () => void): this
 	public once(event: 'registered', listener: (boundPort: Number) => void): this
 
-	public registerService(serviceDefinition: ServiceClient.ServiceDefinition): void
 }
 
 type ServiceDefinition = {
