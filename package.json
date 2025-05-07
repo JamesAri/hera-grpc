@@ -1,7 +1,7 @@
 {
   "name": "hera-grpc",
   "description": "Hera-GRPC is a library built around Node.js gRPC (@grpc/grpc-js) for efficient data transfer in a distributed system without the need of a centralized repository for protocol buffer files (gRPC IDL).",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.12.6",
-    "@grpc/proto-loader": "^0.7.13",
+    "@grpc/proto-loader": "^0.7.15",
     "@grpc/reflection": "^1.0.4",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.56.0",

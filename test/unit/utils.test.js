@@ -101,20 +101,20 @@ describe('utils tests', () => {
 		})
 
 		it('getProtoJsonDescriptorBuffer returns buffer', () => {
-			const buffer = getProtoJsonDescriptorBuffer(filename, loadOptions.includeDirs)
+			const buffer = getProtoJsonDescriptorBuffer(filename, loadOptions)
 			assert.ok(buffer)
 			assert.ok(Buffer.isBuffer(buffer))
 		})
 
 		it('getProtoJsonDescriptorBuffer throws on wrong includeDirs when unable to resolve import', () => {
-			const wrongIncludeDirs = ['wrong/path']
+			const loadOpts = { ...loadOptions, includeDirs: ['wrong/path'] }
 			assert.throws(() => {
-				getProtoJsonDescriptorBuffer(filename, wrongIncludeDirs)
+				getProtoJsonDescriptorBuffer(filename, loadOpts)
 			}, /Unable to resolve import/)
 		})
 
 		it('loadServiceFromBuffer loads service', () => {
-			const buffer = getProtoJsonDescriptorBuffer(filename, loadOptions.includeDirs)
+			const buffer = getProtoJsonDescriptorBuffer(filename, loadOptions)
 			const { packageDefinition, ServiceStub } = loadServiceFromBuffer(
 				buffer,
 				serviceName,

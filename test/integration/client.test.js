@@ -15,7 +15,10 @@ const SERVER_RESPONSE_MESSAGE = 'Test RPC response message'
 const CLIENT_REQUEST_MESSAGE = 'Test RPC request message'
 
 const getTestService = (options = {}) => {
-	const { routes, serviceName, filename, loadOptions, handlers } = options
+	const { routes, serviceName, filename, loadOptions, handlers, rpcResponse } = options
+
+	const message = rpcResponse || { message: SERVER_RESPONSE_MESSAGE }
+
 	return {
 		routes: routes || 'GET 1234/test/route',
 		serviceName: serviceName || protoTestConfig.serviceName,
@@ -23,7 +26,7 @@ const getTestService = (options = {}) => {
 		loadOptions: loadOptions || protoTestConfig.loadOptions,
 		handlers: handlers || {
 			testRpc: (_call, callback) => {
-				callback(null, { message: SERVER_RESPONSE_MESSAGE })
+				callback(null, message)
 			},
 		},
 	}
@@ -95,6 +98,32 @@ describe('Core ServiceClient integration tests', () => {
 			response.message,
 			SERVER_RESPONSE_MESSAGE,
 			'Received incorrect response message',
+		)
+	})
+
+	it('server and client load options propagation - keepCase field', async () => {
+		client = new ServiceClient({
+			zk: process.env.ZK_HERA,
+			port: GRPC_PORT,
+		})
+
+		const rpcResponse = { message: SERVER_RESPONSE_MESSAGE, test_key: 'test_key has underscore' }
+
+		const testService = getTestService({ rpcResponse })
+		client.registerService(testService)
+
+		await client.connect()
+
+		stub = await client.getStub(testService.routes)
+		stub.testRpc = promisify(stub.testRpc).bind(stub)
+
+		const response = await stub.testRpc({ message: 'not important' })
+
+		assert.strictEqual(response.message, rpcResponse.message, `Received incorrect response message`)
+		assert.strictEqual(
+			response.test_key,
+			rpcResponse.test_key,
+			`Received incorrect response message - doesn't respect the keepCase option for the response`,
 		)
 	})
 
